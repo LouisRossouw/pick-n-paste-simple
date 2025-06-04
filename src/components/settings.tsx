@@ -1,0 +1,125 @@
+import { type ReactElement } from 'react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './ui/accordion';
+import { Button } from './ui/button';
+import { CreatedBy } from './created-by';
+
+import { ArrowLeft, Moon, Sun } from 'lucide-react';
+import { useNavigate } from 'react-router';
+
+export function Settings({ logo }: { logo: ReactElement }) {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex w-full flex-col justify-center">
+      <div className="flex w-full px-4">
+        <div className="flex w-full border-b">
+          <Button variant={'ghost'} size={'icon'} onClick={() => navigate('/')}>
+            <ArrowLeft size={18} />
+          </Button>
+        </div>
+      </div>
+      <div className="flex w-full items-center justify-center p-4">
+        <div className="flex w-full sm:w-2/3">
+          <AccordionMenu logo={logo} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function AccordionMenu({ logo }: { logo: ReactElement }) {
+  const  isLight = true
+
+  return (
+    <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+      <AccordionItem value="item-1">
+        <AccordionTrigger>App</AccordionTrigger>
+        <AccordionContent className="grid w-full gap-4">
+          <Button
+            variant={'outline'}
+            // onClick={exampleThemeStorage.toggle}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Theme</p>
+            </div>
+            <div className="flex justify-center text-center">
+              {/* <p className="text-primary/50 text-sm">{'Light'}</p> */}
+              {isLight ? <Moon size={18} /> : <Sun size={18} />}
+            </div>
+          </Button>
+          <Button
+            variant={'outline'}
+            // onClick={() => console.log('app-theme')}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Start app</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{'Side-Bar'}</p>
+            </div>
+          </Button>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-2">
+        <AccordionTrigger>About</AccordionTrigger>
+        <AccordionContent className="flex flex-col gap-4 text-balance">
+          <CreatedBy logo={logo} />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger>Contact</AccordionTrigger>
+        <AccordionContent className="grid w-full gap-4">
+          <Button
+            variant={'ghost'}
+            onClick={() => console.log('app-theme')}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Support</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{'Light'}</p>
+            </div>
+          </Button>
+          <Button
+            variant={'ghost'}
+            onClick={() => console.log('app-theme')}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Feedback</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{'Light'}</p>
+            </div>
+          </Button>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-4">
+        <AccordionTrigger>Other</AccordionTrigger>
+        <AccordionContent className="grid w-full gap-4">
+          <Button
+            variant={'ghost'}
+            onClick={() => console.log('app-theme')}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Privacy Policy</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{'Light'}</p>
+            </div>
+          </Button>
+          <Button
+            variant={'ghost'}
+            // onClick={() => console.log('app-theme')}
+            className="grid w-full grid-cols-2 gap-4 p-2">
+            <div className="text-center">
+              <p className="text-primary text-sm">Terms of User</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{'Side-Bar'}</p>
+            </div>
+          </Button>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}
