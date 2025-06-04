@@ -1,0 +1,26 @@
+{
+"manifest_version": 3,
+"name": "Pick n Paste",
+"description": "Todo",
+"version": "1.0",
+"action": {
+    "default_popup": "src/popup/index.html"
+},
+"side_panel": {
+    "default_path": "src/side-panel/index.html"
+    },
+    "background": {
+  "service_worker": "background.js",
+  "type": "module"
+},
+  "commands": {
+    "reload": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+E"
+      },
+      "description": "Reload the extension" 
+    }
+  },
+"permissions": ["storage", "tabs", "sidePanel", "scripting", "commands"]
+
+}
