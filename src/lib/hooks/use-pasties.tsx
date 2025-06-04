@@ -20,7 +20,7 @@ export type HistoryType = { item: string; type: Modes };
 
 export function usePasties() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("smileys_emotion");
 
   const [history, setHistory] = useState<HistoryType[]>([]);
   const [favourties, setFavourties] = useState<HistoryType[]>([]);
