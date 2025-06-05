@@ -17,7 +17,7 @@ export function SearchBox({
         value={search}
         placeholder="Search.."
         onChange={(v) => handleSearch(v.target.value)}
-        className="focus-visible:ring-none border-none focus-visible:border-none focus-visible:ring-[0px]"
+        className="border-b-none focus-visible:ring-none border-none focus-visible:border-none focus-visible:ring-[0px]"
       />
       {search.length > 0 && (
         <div className="flex items-center justify-center gap-2 border-l">
