@@ -11,6 +11,8 @@ import Menu from "./menu";
 import { SettingsRoute } from "./menu/settings";
 
 export default function SidePanel() {
+  const isDark = false
+
   return (
     <div className="p-4">
       <AppContextProvider>

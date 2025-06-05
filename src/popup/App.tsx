@@ -2,9 +2,20 @@ import { useState } from "react";
 import reactLogo from "../assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { Button } from "@/components/ui/button";
+import { _getStorage, _saveStorage } from "@/lib/hooks/use-storage";
 
 function App() {
   const [count, setCount] = useState(0);
+
+  const toggleStartApp = async () => {
+    const maybeStartApp = await _getStorage("startApp");
+
+    const newStartApp =
+      maybeStartApp?.startApp === "side-panel" ? "popup" : "side-panel";
+    _saveStorage("startApp", newStartApp);
+    chrome.runtime.reload();
+  };
 
   return (
     <>
@@ -26,9 +37,7 @@ function App() {
           Github
         </button>
 
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <Button onClick={() => toggleStartApp()}>Set panel</Button>
         <button
           onClick={() => {
             chrome.runtime.sendMessage("ping", (response) => {

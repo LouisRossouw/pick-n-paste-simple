@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: [
     "./src/popup/index.html",
     "./src/side-panel/index.html",
@@ -12,10 +12,8 @@ export default {
     container: {
       center: true,
       padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
     },
+
     extend: {
       colors: {
         border: 'var(--border)',

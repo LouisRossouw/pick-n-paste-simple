@@ -16,8 +16,15 @@ chrome.commands.onCommand.addListener((command) => {
   }
 });
 
-const openPanelOnActionClick = true;
+const init = async () => {
+  const maybeStartApp = (await chrome.storage.local.get(["startApp"])) as any;
+  const openPanel = maybeStartApp?.startApp === "side-panel" ? true : false;
 
-chrome.sidePanel
-  .setPanelBehavior({ openPanelOnActionClick })
-  .catch((error) => console.error(error));
+  const openPanelOnActionClick = openPanel;
+
+  chrome.sidePanel
+    .setPanelBehavior({ openPanelOnActionClick })
+    .catch((error) => console.error(error));
+};
+
+init();

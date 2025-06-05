@@ -1,12 +1,25 @@
-import { createContext, useState, useContext, useMemo } from 'react';
-import type { PropsWithChildren } from 'react';
+import { createContext, useState, useContext, useMemo, useEffect } from "react";
+import type { PropsWithChildren } from "react";
 
-import type { Mode, Modes } from '@/lib/modes';
+import type { Mode, Modes } from "@/lib/modes";
 
-import {type Category, type HistoryType, type PastiesCategory, usePasties } from '@/lib/hooks/use-pasties.js';
-import { colorsData, emojiData, searchableColors, searchableEmojies } from '@/lib/data-transform.js';
+import {
+  type Category,
+  type HistoryType,
+  type PastiesCategory,
+  usePasties,
+} from "@/lib/hooks/use-pasties.js";
+import {
+  colorsData,
+  emojiData,
+  searchableColors,
+  searchableEmojies,
+} from "@/lib/data-transform.js";
+import { usePreferences } from "../hooks/use-preferences";
 
-type CopyBoxModes = 'history' | 'favourite';
+type CBM = "history" | "favourite";
+type Theme = "light" | "dark";
+type StartApp = "side-panel" | "popup";
 
 export type SearchablePasties = {
   slug: string;
@@ -18,6 +31,10 @@ export type SearchablePasties = {
 
 type AppContextType = {
   mode: Mode;
+  startApp: string;
+  setStartApp: (v: StartApp) => void;
+  theme: Theme;
+  setTheme: (v: Theme) => void;
   setMode: (v: Mode) => void;
   search: string;
   setSearch: (v: string) => void;
@@ -29,46 +46,77 @@ type AppContextType = {
   setHistory: React.Dispatch<React.SetStateAction<HistoryType[]>>;
   favourties: HistoryType[];
   setFavourties: React.Dispatch<React.SetStateAction<HistoryType[]>>;
-  pastCopyBoxMode: CopyBoxModes;
-  setPastCopyBoxMode: (v: CopyBoxModes) => void;
+  pastCopyBoxMode: CBM;
+  setPastCopyBoxMode: (v: CBM) => void;
   handleUpdateCategories: (v: Modes) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
-  mode: { slug: 'emojies-picker', label: 'Emojies' },
+  mode: { slug: "emojies-picker", label: "Emojies" },
+  startApp: "side-panel",
+  setStartApp: () => {},
+  theme: "light",
+  setTheme: () => {},
   setMode: () => {},
-  search: '',
+  search: "",
   setSearch: () => {},
   categories: [],
-  selectedCategory: '',
+  selectedCategory: "",
   setSelectedCategory: () => {},
   filteredPasties: [],
   history: [],
   setHistory: () => {},
   favourties: [],
   setFavourties: () => {},
-  pastCopyBoxMode: 'history',
+  pastCopyBoxMode: "history",
   setPastCopyBoxMode: () => {},
   handleUpdateCategories: () => {},
 });
 
+const defaultMode = {
+  slug: "emojies-picker",
+  label: "Emojies",
+} as Mode;
+
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
+  const { getStartApp, getTheme } = usePreferences();
   const pasties = usePasties();
 
-  const [search, setSearch] = useState('');
-  const [mode, setMode] = useState<Mode>({ slug: 'emojies-picker', label: 'Emojies' });
-  const [pastCopyBoxMode, setPastCopyBoxMode] = useState<CopyBoxModes>('history');
+  const [hasMounted, setHasMounted] = useState(false);
+
+  const [search, setSearch] = useState("");
+  const [startApp, setStartApp] = useState("side-panel");
+  const [theme, setTheme] = useState<Theme>("light");
+  const [mode, setMode] = useState<Mode>(defaultMode);
+  const [pastCopyBoxMode, setPastCopyBoxMode] = useState<CBM>("history");
+
+  useEffect(() => {
+    const init = async () => {
+      const startApp = await getStartApp(); // Could maybe Remove this and call it directly in the settings menu
+      const theme = (await getTheme()) as Theme;
+
+      setTheme(theme);
+      setStartApp(startApp);
+
+      if (theme) {
+        setHasMounted(true);
+      }
+    };
+    init();
+  }, []);
 
   // ** Categories & All
   const filteredPasties: PastiesCategory[] = useMemo(() => {
     if (search.length > 0) return [];
     const cat = pasties.selectedCategory;
-    const isAll = cat === 'all'; // Is all categories
+    const isAll = cat === "all"; // Is all categories
 
-    if (mode.slug === 'color-picker') {
-      return isAll ? colorsData : colorsData.filter(e => e.slug === cat);
+    if (mode.slug === "color-picker") {
+      return isAll ? colorsData : colorsData.filter((e) => e.slug === cat);
     } else {
-      const maybePasties = isAll ? emojiData : emojiData.filter(e => e.slug === cat);
+      const maybePasties = isAll
+        ? emojiData
+        : emojiData.filter((e) => e.slug === cat);
       return isAll ? maybePasties : maybePasties[0]?.items;
     }
   }, [mode, emojiData, pasties.selectedCategory]);
@@ -77,17 +125,29 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
   const searchedPasties: SearchablePasties[] = useMemo(() => {
     if (search.length === 0) return [];
 
-    if (mode.slug === 'color-picker') {
-      return searchableColors.filter(e => e.keywords.includes(search.toLowerCase()));
+    if (mode.slug === "color-picker") {
+      return searchableColors.filter((e) =>
+        e.keywords.includes(search.toLowerCase())
+      );
     } else {
-      return searchableEmojies.filter(e => e.keywords.includes(search.toLowerCase()));
+      return searchableEmojies.filter((e) =>
+        e.keywords.includes(search.toLowerCase())
+      );
     }
   }, [search]);
+
+  if (!hasMounted) {
+    return <div></div>;
+  }
 
   return (
     <AppContext.Provider
       value={{
         ...pasties,
+        startApp,
+        setStartApp,
+        theme,
+        setTheme,
         mode,
         setMode,
         search,
@@ -95,7 +155,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         filteredPasties: search.length > 0 ? searchedPasties : filteredPasties,
         pastCopyBoxMode,
         setPastCopyBoxMode,
-      }}>
+      }}
+    >
       {children}
     </AppContext.Provider>
   );

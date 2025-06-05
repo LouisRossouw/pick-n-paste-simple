@@ -13,19 +13,19 @@ const webClient = getWebSiteURL();
 export function FooterInfoRow() {
   function redirectToTOS() {
     const url = `${webClient}/other/terms-of-use?intent=terms-of-use&origin=chrome-ext&product=${PRODUCT.productId}`;
-    chrome.tabs.create({ url: url }, function(tab) {});
+    chrome.tabs.create({ url: url }, function (tab) {});
   }
 
   function redirectToPOP() {
     const url = `${webClient}/other/privacy-policy?intent=privacy-policy&origin=chrome-ext&product=${PRODUCT.productId}`;
-    chrome.tabs.create({ url: url }, function(tab) {});
+    chrome.tabs.create({ url: url }, function (tab) {});
   }
 
   return (
     <div className="flex w-full justify-center opacity-50">
-      <div className="grid w-full justify-center px-4 sm:flex sm:justify-between">
+      <div className="flex w-full justify-center px-4">
         <AppVersion />
-        <p className="text-light text-xs">© 2025. All rights reserved.</p>
+        {/* <p className="text-light text-xs">© 2025. All rights reserved.</p>
 
         <div className="flex gap-1">
           <p
@@ -41,7 +41,7 @@ export function FooterInfoRow() {
           >
             Privacy Policy
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

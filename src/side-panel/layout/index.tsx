@@ -24,7 +24,6 @@ export default function Layout() {
     favourties,
     pastCopyBoxMode,
   } = useApp();
-  const logo = "../assets/Pick_n_Pay_logo_1280_picked.png";
 
   return (
     <div className="h-[calc(100vh-350px)] w-full space-y-4">
@@ -49,7 +48,7 @@ export default function Layout() {
           return (
             <Button
               size={"icon"}
-              className="h-10 w-6 sm:w-10"
+              className="h-10 w-10 sm:w-10"
               style={{
                 backgroundColor: mode.slug === "emojies-picker" ? "" : cat.item,
               }}

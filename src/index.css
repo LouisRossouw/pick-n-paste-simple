@@ -5,6 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --breakpoint-sm: 40rem;
+  --breakpoint-2xl: 100rem;
+  --breakpoint-3xl: 120rem;
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
