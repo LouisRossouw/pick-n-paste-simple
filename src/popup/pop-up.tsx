@@ -1,5 +1,4 @@
 import "./App.css";
-
 import { AppContextProvider } from "@/lib/context";
 import { HashRouter, Link, Route, Routes } from "react-router";
 import Layout from "./layout";
@@ -8,7 +7,7 @@ import Menu from "./menu";
 import { SettingsRoute } from "./menu/settings";
 import { Toaster } from "@/components/ui/Sonner";
 
-export default function SidePanel() {
+export default function PopUp() {
   return (
     <div className="p-4">
       <AppContextProvider>
