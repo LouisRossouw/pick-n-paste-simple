@@ -72,7 +72,10 @@ export default {
           "0%": { opacity: 0 },
           "100%": { opacity: 1 },
         },
-
+        fadeInViewer: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
         rotateSpin: {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },

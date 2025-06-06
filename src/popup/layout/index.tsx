@@ -1,41 +1,37 @@
-import { FooterInfoRow } from "@/components/footer-info-row";
-import { NavBar } from "@/components/nav-bar";
-import { PastCopyBox } from "@/components/past-copy-box";
-import { SearchBox } from "@/components/search-box";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/context";
 
-import { Outlet } from "react-router";
-import { useNavigate } from "react-router-dom";
-import viteLogo from "/Pick_n_Pay_logo_1280_picked.png";
+import { Input } from "@/components/ui/input";
+import { NavBar } from "@/components/nav-bar";
+import { MainBlock } from "@/components/main-block";
+import { AppVersion } from "@/components/app-version";
+
+import logo from "/Pick_n_Pay_logo_350.png";
 
 export default function Layout() {
   const navigate = useNavigate();
 
-  const {
-    search,
-    setSearch,
-    mode,
-    categories,
-    selectedCategory,
-    setSelectedCategory,
-    history,
-    setHistory,
-    favourties,
-    pastCopyBoxMode,
-  } = useApp();
+  const { search, setSearch } = useApp();
+
+  // hovered blocks
+  const [isCenterBlockHovered, setIsCenterBlockHovered] = useState(false);
+  const [, setIsBottomBlockHovered] = useState(false);
 
   return (
-    <div className="h-[calc(100vh-350px)] w-full space-y-4">
+    <div className="w-[500px]">
       <nav className="w-full">
         <div className="flex w-full">
           <NavBar
+            compact={true}
             menuFN={() => navigate("menu")}
             logo={
               <img
-                src={chrome.runtime.getURL(viteLogo)}
-                width={120}
-                height={50}
+                src={chrome.runtime.getURL(logo)}
+                width={20}
+                height={20}
                 alt="Pick n Paste"
               />
             }
@@ -43,52 +39,88 @@ export default function Layout() {
         </div>
       </nav>
 
-      <div className="flex w-full justify-evenly">
-        {categories.map((cat) => {
-          return (
-            <Button
-              size={"icon"}
-              className="h-10 w-10 sm:w-10"
-              style={{
-                backgroundColor: mode.slug === "emojies-picker" ? "" : cat.item,
-              }}
-              onClick={() => setSelectedCategory(cat.slug)}
-              variant={selectedCategory === cat.slug ? "outline" : "ghost"}
-            >
-              {mode.slug === "emojies-picker" && (
-                <span className="text-lg">{cat.item}</span>
-              )}
-            </Button>
-          );
-        })}
-      </div>
-
-      <div className="h-full w-full rounded-lg border">
-        <Outlet />
-      </div>
-
-      <div className="flex items-center justify-center rounded-lg border">
-        <PastCopyBox
-          mode={mode}
-          pasties={pastCopyBoxMode === "history" ? history : favourties}
-          setHistory={setHistory}
-          clearBox={() => setHistory([])}
-        />
-      </div>
-
       <div className="flex w-full">
-        <SearchBox
-          search={search}
-          handleSearch={setSearch}
-          clearBox={() => setSearch("")}
-        />
+        <div className="w-full">
+          <div
+            onMouseEnter={() => setIsCenterBlockHovered(true)}
+            onMouseLeave={() => setIsCenterBlockHovered(false)}
+            className="flex items-end justify-center w-full relative px-2 bg-transparent"
+          >
+            <MainBlock
+              isCompactMode={true}
+              // startView={
+              //   pinView?.pinnedViews
+              //     ? (pinView.pinnedViews[pinView.selectedView]?.centerBlock ??
+              //       "year-bar-view")
+              //     : undefined
+              // }
+              blockType="centerBlock"
+              selected={"emojies-picker"}
+              isHovered={isCenterBlockHovered}
+              setSelected={() => console.log("todo")}
+            />
+          </div>
+          <div
+            onMouseEnter={() => setIsBottomBlockHovered(true)}
+            onMouseLeave={() => setIsBottomBlockHovered(false)}
+            className="flex items-center justify-evenly w-full h-10 gap-4 px-2"
+          >
+            <div className="w-2/3 mb-2">
+              <Input
+                value={search}
+                placeholder="Search.."
+                onChange={(v) => setSearch(v.target.value)}
+                className={cn(
+                  "text-center border-b-none",
+                  "focus-visible:ring-none border-none",
+                  "focus-visible:border-none focus-visible:ring-[0px]"
+                )}
+              />
+            </div>
+            {/* <SearchBox
+              search={search}
+              handleSearch={setSearch}
+              clearBox={() => setSearch("")}
+              className="border-none"
+            /> */}
+            {/* <SubBlock
+              isCompactMode={true}
+              blockType={'bottomBlock'}
+              startView={
+                pinView?.pinnedViews
+                  ? (pinView?.pinnedViews[pinView.selectedView]?.bottomBlock ?? 'heatmap-view')
+                  : undefined
+              }
+              pollCount={poll.pollCount}
+              percentages={percentages}
+              userSettings={userSettings}
+              setShowProgressBar={setShowProgressBar}
+              yearFocus={yearFocus}
+              setYearFocus={setYearFocus}
+              calcs={calcs}
+              isBirthday={isBirthday}
+              selHeatMap={selHeatMap}
+              userProfile={userProfile}
+              handleFocusUserStats={handleFocusUserStats}
+              isHovered={isBottomBlockHovered}
+              dates={dates}
+              setSelHeatMap={setSelHeatMap}
+              blurBlock={blurBottomBlock}
+              setBlurBlock={setBlurBottomBlock}
+              blurAllBlocks={blurAllBlocks}
+              calenderSelectedDate={calenderSelectedDate}
+              savedDates={savedDates ?? []}
+              savedDateToday={savedDateToday}
+              selected={pinView.bottomBlock}
+              setSelected={pinView.setBottomBlock}
+            /> */}
+          </div>
+        </div>
       </div>
-      <div className="absolute bottom-0 -ml-4 flex w-full items-end justify-between px-4">
-        {/* <p className="text-xs opacity-50">{mode.slug}</p>
-        <p className="text-xs opacity-50 hover:opacity-100">www.louisrossouw.com</p>
-        <p className="text-xs opacity-50 hover:opacity-100">v1.0.0 (alpha)</p> */}
-        <FooterInfoRow />
-      </div>
+      {/* <div className="absolute bottom-0 flex w-full items-end justify-end px-4">
+        <AppVersion className="opacity-30" />
+
+      </div> */}
     </div>
   );
 }
