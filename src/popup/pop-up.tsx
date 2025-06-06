@@ -9,7 +9,7 @@ import { Toaster } from "@/components/ui/Sonner";
 
 export default function PopUp() {
   return (
-    <div className="p-4">
+    <div className="">
       <AppContextProvider>
         <HashRouter>
           <Routes>
@@ -22,7 +22,7 @@ export default function PopUp() {
             </Route>
           </Routes>
         </HashRouter>
-        <Toaster />
+        <Toaster isCompact />
       </AppContextProvider>
     </div>
   );

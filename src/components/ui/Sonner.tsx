@@ -1,6 +1,9 @@
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-const Toaster = ({ ...props }: ToasterProps) => {
+const Toaster = ({
+  isCompact,
+  ...props
+}: { isCompact: boolean } & ToasterProps) => {
   //   const { theme = 'system' } = useTheme();
 
   return (
@@ -17,7 +20,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       }}
       style={
         {
-          bottom: "220px",
+          bottom: isCompact ? "50px" : "220px",
           textAlign: "center",
           borderColor: "red",
           "--normal-bg": "white",
