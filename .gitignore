@@ -28,3 +28,4 @@ dist-ssr
 ./src/tmp_env.ts
 src/tmp_env.ts
 src/tmp_env
+output

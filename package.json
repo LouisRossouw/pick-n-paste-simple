@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc -b && vite build",
+    "build:zip": "vite build && python prep-package.py",
     "lint": "eslint .",
     "preview": "vite preview"
   },

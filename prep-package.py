@@ -2,7 +2,7 @@ import os
 import json
 import shutil
 
-project_name = "timeinprogress"
+project_name = "pick_n_paste"
 
 dirs_to_remove = ['content-ui', 'devtools',
                   'devtools-panel', 'new-tab', 'options']
@@ -37,7 +37,7 @@ def run():
 
     clean_directory(dist_path)
 
-    print('Packaged as .zip and ready to be deployed @ https://chrome.google.com/webstore/devconsole/44f3d8dc-7a76-47af-913d-aea579a1509c')
+    print('Packaged as .zip and ready to be deployed @ https://chrome.google.com/webstore/devconsole/dkmcialmfkdbmeomadhjockfcelikbdb')
 
 
 def clean_directory(dist_path):
