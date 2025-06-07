@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from "react";
+import { type ReactElement } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -57,6 +57,22 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
     chrome.runtime.reload();
   };
 
+  function handleDetach() {
+    chrome.windows.create({
+      url: chrome.runtime.getURL("src/popup/index.html"),
+      type: "popup",
+      width: 520,
+      height: 330,
+    });
+  }
+
+  // function handleOpenSidePanel() {
+  //   window.close();
+  //   chrome.windows.getCurrent({ populate: true }, (window) => {
+  //     (chrome as any).sidePanel.open({ windowId: window.id });
+  //   });
+  // }
+
   const isDark = theme === "light" ? true : false;
 
   return (
@@ -87,11 +103,43 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
             className="grid w-full grid-cols-2 gap-4 p-2"
           >
             <div className="text-center">
-              <p className="text-primary text-sm">Start app</p>
+              <p className="text-primary text-sm">Start as</p>
             </div>
             <div className="text-center">
               <p className="text-primary/50 text-sm">{startApp}</p>
             </div>
+          </Button>
+
+          <Button
+            variant={"outline"}
+            onClick={() => handleDetach()}
+            className="grid w-full grid-cols-2 gap-4 p-2"
+          >
+            <div className="text-center">
+              <p className="text-primary text-sm">Detach</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm"></p>
+            </div>
+          </Button>
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="item-3">
+        <AccordionTrigger>Contact</AccordionTrigger>
+        <AccordionContent className="grid w-full gap-4">
+          <Button
+            variant={"outline"}
+            onClick={() => console.log("todo")}
+            className="w-full p-2"
+          >
+            <p className="text-center text-primary text-sm">Feedback</p>
+          </Button>
+          <Button
+            variant={"outline"}
+            onClick={() => console.log("todo")}
+            className="w-full p-2"
+          >
+            <p className="text-center text-primary text-sm">Support</p>
           </Button>
         </AccordionContent>
       </AccordionItem>
@@ -101,61 +149,23 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
           <CreatedBy logo={logo} />
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger>Contact</AccordionTrigger>
-        <AccordionContent className="grid w-full gap-4">
-          <Button
-            variant={"ghost"}
-            onClick={() => console.log("app-theme")}
-            className="grid w-full grid-cols-2 gap-4 p-2"
-          >
-            <div className="text-center">
-              <p className="text-primary text-sm">Support</p>
-            </div>
-            <div className="text-center">
-              <p className="text-primary/50 text-sm">{"Light"}</p>
-            </div>
-          </Button>
-          <Button
-            variant={"ghost"}
-            onClick={() => console.log("app-theme")}
-            className="grid w-full grid-cols-2 gap-4 p-2"
-          >
-            <div className="text-center">
-              <p className="text-primary text-sm">Feedback</p>
-            </div>
-            <div className="text-center">
-              <p className="text-primary/50 text-sm">{"Light"}</p>
-            </div>
-          </Button>
-        </AccordionContent>
-      </AccordionItem>
       <AccordionItem value="item-4">
         <AccordionTrigger>Other</AccordionTrigger>
         <AccordionContent className="grid w-full gap-4">
           <Button
-            variant={"ghost"}
-            onClick={() => console.log("app-theme")}
-            className="grid w-full grid-cols-2 gap-4 p-2"
+            variant={"outline"}
+            onClick={() => console.log("todo")}
+            className="w-full p-2"
           >
-            <div className="text-center">
-              <p className="text-primary text-sm">Privacy Policy</p>
-            </div>
-            <div className="text-center">
-              <p className="text-primary/50 text-sm">{"Light"}</p>
-            </div>
+            <p className="text-center text-primary text-sm">Privacy Policy</p>
           </Button>
+
           <Button
-            variant={"ghost"}
-            // onClick={() => console.log('app-theme')}
-            className="grid w-full grid-cols-2 gap-4 p-2"
+            variant={"outline"}
+            onClick={() => console.log("todo")}
+            className="w-full p-2"
           >
-            <div className="text-center">
-              <p className="text-primary text-sm">Terms of User</p>
-            </div>
-            <div className="text-center">
-              <p className="text-primary/50 text-sm">{"Side-Bar"}</p>
-            </div>
+            <p className="text-center text-primary text-sm">Terms of User</p>
           </Button>
         </AccordionContent>
       </AccordionItem>

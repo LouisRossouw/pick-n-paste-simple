@@ -1,28 +1,30 @@
-import { FooterInfoRow } from "@/components/footer-info-row";
-import { NavBar } from "@/components/nav-bar";
-import { PastCopyBox } from "@/components/past-copy-box";
-import { SearchBox } from "@/components/search-box";
-import { Button } from "@/components/ui/button";
-import { useApp } from "@/lib/context";
-
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
+
+import { useApp } from "@/lib/context";
+
+import { NavBar } from "@/components/nav-bar";
+import { Button } from "@/components/ui/button";
+import { SearchBox } from "@/components/search-box";
+import { PastCopyBox } from "@/components/past-copy-box";
+import { FooterInfoRow } from "@/components/footer-info-row";
+
 import viteLogo from "/Pick_n_Pay_logo_1280_picked.png";
 
 export default function Layout() {
   const navigate = useNavigate();
 
   const {
-    search,
-    setSearch,
     mode,
-    categories,
-    selectedCategory,
-    setSelectedCategory,
+    search,
     history,
-    setHistory,
+    categories,
     favourties,
+    selectedCategory,
     pastCopyBoxMode,
+    setSearch,
+    setHistory,
+    setSelectedCategory,
   } = useApp();
 
   return (
@@ -44,20 +46,26 @@ export default function Layout() {
       </nav>
 
       <div className="flex w-full justify-evenly">
-        {categories.map((cat) => {
+        {categories.map((cat, index: number) => {
+          const isAllColorPicker = mode.slug === "color-picker" && index === 0;
+
           return (
             <Button
               size={"icon"}
-              className="h-10 w-10 sm:w-10"
+              className="h-6 w-6 sm:w-10 sm:h-10"
               style={{
                 backgroundColor: mode.slug === "emojies-picker" ? "" : cat.item,
               }}
-              onClick={() => setSelectedCategory(cat.slug)}
+              onClick={() => {
+                setSearch("");
+                setSelectedCategory(isAllColorPicker ? "all" : cat.slug);
+              }}
               variant={selectedCategory === cat.slug ? "outline" : "ghost"}
             >
               {mode.slug === "emojies-picker" && (
                 <span className="text-lg">{cat.item}</span>
               )}
+              {mode.slug === "color-picker" && index === 0 && <span>All</span>}
             </Button>
           );
         })}
@@ -84,9 +92,6 @@ export default function Layout() {
         />
       </div>
       <div className="absolute bottom-0 -ml-4 flex w-full items-end justify-between px-4">
-        {/* <p className="text-xs opacity-50">{mode.slug}</p>
-        <p className="text-xs opacity-50 hover:opacity-100">www.louisrossouw.com</p>
-        <p className="text-xs opacity-50 hover:opacity-100">v1.0.0 (alpha)</p> */}
         <FooterInfoRow />
       </div>
     </div>

@@ -37,6 +37,7 @@ function transformColors(data: ColorCategory[]) {
       ...i,
       item: i.color,
       label: i.name,
+      labelExtra: item.paletteName,
       slug: `${i.name}-${i.color}`,
     })),
   }));
@@ -61,7 +62,7 @@ export const searchableColors = colorsData.flatMap((category) =>
     item: e.item,
     label: e.label,
     category: category.label,
-    keywords: `${e.name} ${category.label}`.toLowerCase(),
+    keywords: `${e.name} ${e.labelExtra} ${category.label}`.toLowerCase(),
   }))
 );
 

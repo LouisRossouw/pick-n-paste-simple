@@ -1,8 +1,8 @@
 {
 "manifest_version": 3,
 "name": "Pick n Paste",
-"description": "Todo",
-"version": "1.0",
+"description": "Pick emojies & tailwind colors!",
+"version": "1.0.0",
 "action": {
     "default_popup": "src/popup/index.html"
 },
@@ -13,6 +13,9 @@
   "service_worker": "background.js",
   "type": "module"
 },
+  "icons": {
+    "128": "Pick_n_Pay_logo_350_2.png"
+  },
   "commands": {
     "reload": {
       "suggested_key": {

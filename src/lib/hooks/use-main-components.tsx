@@ -147,29 +147,55 @@ export function useMainComponents(selected: string | null) {
                     }
 
                     return (
-                      <motion.div
-                        whileHover={{ scale: 1.2 }}
-                        whileTap={{ scale: 1.4 }}
-                      >
-                        <Button
-                          size={"icon"}
-                          key={pasti.slug}
-                          style={{ backgroundColor: pasti.item }}
-                          className="h-6 w-6 sm:w-6"
-                          onClick={() => {
-                            handleSelected(pasti);
-                          }}
-                          variant={
-                            selected === pasti.slug ? "outline" : "ghost"
-                          }
-                        >
-                          {index === 0 && (
-                            <span className="text-xs text-gray-500">
-                              {pasti.label}
-                            </span>
-                          )}
-                        </Button>
-                      </motion.div>
+                      <div className="flex flex-col items-evenly w-full h-full gap-1">
+                        {search?.length === 0 ? (
+                          <>
+                            {pasti?.items?.map((i: any) => {
+                              return (
+                                <Button
+                                  size={"icon"}
+                                  key={i.slug}
+                                  style={{ backgroundColor: i.item }}
+                                  className="flex h-full w-full"
+                                  onClick={() => {
+                                    handleSelected(i);
+                                  }}
+                                  variant={
+                                    selected === i.slug ? "outline" : "ghost"
+                                  }
+                                >
+                                  <span className="text-xs text-gray-500">
+                                    {i.label}
+                                  </span>
+                                </Button>
+                              );
+                            })}
+                          </>
+                        ) : (
+                          <>
+                            {pasties?.map((i) => {
+                              return (
+                                <Button
+                                  size={"icon"}
+                                  key={i.slug}
+                                  style={{ backgroundColor: i.item }}
+                                  className="flex h-full w-full"
+                                  onClick={() => {
+                                    handleSelected(i);
+                                  }}
+                                  variant={
+                                    selected === i.slug ? "outline" : "ghost"
+                                  }
+                                >
+                                  <span className="text-xs text-gray-500">
+                                    {i.label}
+                                  </span>
+                                </Button>
+                              );
+                            })}
+                          </>
+                        )}
+                      </div>
                     );
                   })}
                 </div>

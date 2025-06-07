@@ -3,7 +3,7 @@ import { Toaster as Sonner, type ToasterProps } from "sonner";
 const Toaster = ({
   isCompact,
   ...props
-}: { isCompact: boolean } & ToasterProps) => {
+}: { isCompact?: boolean } & ToasterProps) => {
   //   const { theme = 'system' } = useTheme();
 
   return (

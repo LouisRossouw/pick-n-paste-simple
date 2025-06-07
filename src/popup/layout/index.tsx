@@ -7,7 +7,6 @@ import { useApp } from "@/lib/context";
 import { Input } from "@/components/ui/input";
 import { NavBar } from "@/components/nav-bar";
 import { MainBlock } from "@/components/main-block";
-import { AppVersion } from "@/components/app-version";
 
 import logo from "/Pick_n_Pay_logo_350.png";
 
@@ -77,50 +76,9 @@ export default function Layout() {
                 )}
               />
             </div>
-            {/* <SearchBox
-              search={search}
-              handleSearch={setSearch}
-              clearBox={() => setSearch("")}
-              className="border-none"
-            /> */}
-            {/* <SubBlock
-              isCompactMode={true}
-              blockType={'bottomBlock'}
-              startView={
-                pinView?.pinnedViews
-                  ? (pinView?.pinnedViews[pinView.selectedView]?.bottomBlock ?? 'heatmap-view')
-                  : undefined
-              }
-              pollCount={poll.pollCount}
-              percentages={percentages}
-              userSettings={userSettings}
-              setShowProgressBar={setShowProgressBar}
-              yearFocus={yearFocus}
-              setYearFocus={setYearFocus}
-              calcs={calcs}
-              isBirthday={isBirthday}
-              selHeatMap={selHeatMap}
-              userProfile={userProfile}
-              handleFocusUserStats={handleFocusUserStats}
-              isHovered={isBottomBlockHovered}
-              dates={dates}
-              setSelHeatMap={setSelHeatMap}
-              blurBlock={blurBottomBlock}
-              setBlurBlock={setBlurBottomBlock}
-              blurAllBlocks={blurAllBlocks}
-              calenderSelectedDate={calenderSelectedDate}
-              savedDates={savedDates ?? []}
-              savedDateToday={savedDateToday}
-              selected={pinView.bottomBlock}
-              setSelected={pinView.setBottomBlock}
-            /> */}
           </div>
         </div>
       </div>
-      {/* <div className="absolute bottom-0 flex w-full items-end justify-end px-4">
-        <AppVersion className="opacity-30" />
-
-      </div> */}
     </div>
   );
 }
