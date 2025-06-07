@@ -66,7 +66,7 @@ export function NavBar({
       <div
         className={cn(
           "flex w-full px-4",
-          isDark ? "bg-slate-900" : "bg-slate-100"
+          isDark ? "bg-slate-950" : "bg-slate-100"
         )}
       >
         <div className="flex items-center">{logo}</div>

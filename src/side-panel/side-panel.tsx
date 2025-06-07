@@ -1,16 +1,16 @@
 import "./App.css";
 
-import { AppContextProvider } from "@/lib/context";
 import { HashRouter, Link, Route, Routes } from "react-router";
 import Layout from "./layout";
 import Home from "./home";
 import Menu from "./menu";
 import { SettingsRoute } from "./menu/settings";
 import { Toaster } from "@/components/ui/Sonner";
+import { AppContextProvider } from "@/lib/context";
 
 export default function SidePanel() {
   return (
-    <div className="p-4">
+    <div className="h-screen p-2 bg-background">
       <AppContextProvider>
         <HashRouter>
           <Routes>
