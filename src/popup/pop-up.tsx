@@ -1,11 +1,12 @@
 import "./App.css";
 import { AppContextProvider } from "@/lib/context";
-import { HashRouter, Link, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router";
 import Layout from "./layout";
 import Home from "./home";
 import Menu from "./menu";
 import { SettingsRoute } from "./menu/settings";
 import { Toaster } from "@/components/ui/Sonner";
+import { NoMatch } from "@/components/no-match";
 
 export default function PopUp() {
   return (
@@ -24,17 +25,6 @@ export default function PopUp() {
         </HashRouter>
         <Toaster isCompact />
       </AppContextProvider>
-    </div>
-  );
-}
-
-function NoMatch() {
-  return (
-    <div>
-      <h2>Nothing to see here!</h2>
-      <p>
-        <Link to="/">Go to the home page</Link>
-      </p>
     </div>
   );
 }

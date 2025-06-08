@@ -1,84 +1,30 @@
-import { useState } from "react";
 import { motion } from "motion/react";
-import { toast } from "sonner";
-
-import { cn } from "@/lib/utils";
-import type { PastiesCategory } from "@/lib/hooks/use-pasties";
-import { useApp, type SearchablePasties } from "@/lib/context";
-
 import { Button } from "./ui/button";
-import { PastieButton } from "./render-emojies";
+import type { Mode } from "@/lib/modes";
+import type { SearchablePasties } from "@/lib/context";
+import type { PastiesCategory } from "@/lib/hooks/use-pasties";
+import { cn } from "@/lib/utils";
 
-export function PastiesArea() {
-  const { search, mode, selectedCategory, filteredPasties, setHistory } =
-    useApp();
+type PS = PastiesCategory | any;
 
-  const [selected, setSelected] = useState("");
+export function RenderColors({
+  search,
+  mode,
+  pasties,
+  handleSelected,
 
-  function handleSelected(pasti: PastiesCategory | SearchablePasties) {
-    navigator.clipboard.writeText(pasti.item).then(() => {
-      console.log(`Copied ${pasti.item} to clipboard`);
-    });
-    toast(`${pasti.item} has been copied to your clipboard!`);
-    setSelected(pasti.slug);
-
-    handleHistoryUpdate(pasti);
-  }
-
-  function handleHistoryUpdate(pasti: PastiesCategory | SearchablePasties) {
-    const newItem = {
-      item: pasti.item.trim(),
-      type: mode.slug,
-    };
-
-    setHistory((prev) => {
-      const withoutDuplicate = prev.filter(
-        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase()
-      );
-      return [newItem, ...withoutDuplicate.slice(0, 19)];
-    });
-  }
-
-  const pasties = filteredPasties as any[];
-
+  selected,
+  selectedCategory,
+}: {
+  search: string;
+  mode: Mode;
+  pasties: PS[];
+  handleSelected: (v: PS) => void;
+  selected: string | null;
+  selectedCategory: string;
+}) {
   return (
-    <div className="h-full w-full overflow-y-scroll p-4">
-      {mode.slug === "emojies-picker" && (
-        <div className="flex w-full flex-wrap justify-evenly gap-2">
-          {pasties?.map((pasti) => {
-            if (selectedCategory === "all" && search.length === 0) {
-              return (
-                <div className="border-b p-4">
-                  <p className="p-y-4 w-full text-lg">{pasti.label}</p>
-                  <div className="flex w-full flex-wrap justify-evenly">
-                    {pasti?.items.map((p: any) => {
-                      return (
-                        <PastieButton
-                          slug={pasti.slug}
-                          handleSelected={() => handleSelected(pasti)}
-                          className={"h-12 w-12"}
-                          variant={selected === p.slug ? "outline" : "ghost"}
-                          children={<span className="text-2xl">{p.item}</span>}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            }
-
-            return (
-              <PastieButton
-                slug={pasti.slug}
-                handleSelected={() => handleSelected(pasti)}
-                className={"h-12 w-12"}
-                variant={selected === pasti.slug ? "outline" : "ghost"}
-                children={<span className="text-2xl">{pasti.item}</span>}
-              />
-            );
-          })}
-        </div>
-      )}
+    <>
       {mode.slug === "color-picker" && (
         <div className="flex h-full w-full flex-wrap justify-evenly sm:gap-4">
           {pasties?.map((pasti, index) => {
@@ -99,7 +45,7 @@ export function PastiesArea() {
                             key={p.slug}
                             style={{ backgroundColor: p.item }}
                             className={cn(
-                              "h-8 w-6 sm:w-12 sm:h-12",
+                              "h-6 w-6 sm:w-6",
                               i === 0 && "flex justify-start"
                             )}
                             onClick={() => {
@@ -128,7 +74,7 @@ export function PastiesArea() {
             }
 
             return (
-              <div className="flex flex-col items-evenly w-full h-full gap-2">
+              <div className="flex flex-col items-evenly w-full h-full gap-1">
                 {search?.length === 0 ? (
                   <>
                     {pasti?.items?.map((i: any) => {
@@ -177,6 +123,6 @@ export function PastiesArea() {
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }

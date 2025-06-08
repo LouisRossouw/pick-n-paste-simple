@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useApp } from "@/lib/context";
 
 import { NavBar } from "@/components/nav-bar";
-import { Button } from "@/components/ui/button";
 import { SearchBox } from "@/components/search-box";
 import { PastCopyBox } from "@/components/past-copy-box";
 import { FooterInfoRow } from "@/components/footer-info-row";
+import { CategorySection } from "@/components/category-selector";
 
 import logo from "/pick_n_paste_logo_1280_picked_03.png";
 
@@ -46,29 +46,13 @@ export default function Layout() {
       </nav>
 
       <div className="flex w-full justify-evenly">
-        {categories.map((cat, index: number) => {
-          const isAllColorPicker = mode.slug === "color-picker" && index === 0;
-
-          return (
-            <Button
-              size={"icon"}
-              className="h-6 w-6 sm:w-10 sm:h-10"
-              style={{
-                backgroundColor: mode.slug === "emojies-picker" ? "" : cat.item,
-              }}
-              onClick={() => {
-                setSearch("");
-                setSelectedCategory(isAllColorPicker ? "all" : cat.slug);
-              }}
-              variant={selectedCategory === cat.slug ? "outline" : "ghost"}
-            >
-              {mode.slug === "emojies-picker" && (
-                <span className="text-lg">{cat.item}</span>
-              )}
-              {mode.slug === "color-picker" && index === 0 && <span>All</span>}
-            </Button>
-          );
-        })}
+        <CategorySection
+          categories={categories}
+          mode={mode}
+          setSearch={setSearch}
+          setSelectedCategory={setSelectedCategory}
+          selectedCategory={selectedCategory}
+        />
       </div>
 
       <div className="h-full w-full rounded-lg border">

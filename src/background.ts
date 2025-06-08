@@ -9,13 +9,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "reload") {
-    console.log("Reload command triggered");
-    chrome.runtime.reload();
-  }
-});
-
 const init = async () => {
   const maybeStartApp = (await chrome.storage.local.get(["startApp"])) as any;
   const openPanel = maybeStartApp?.startApp === "side-panel" ? true : false;

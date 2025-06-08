@@ -6,7 +6,7 @@ import { useApp } from "@/lib/context";
 
 import { Input } from "@/components/ui/input";
 import { NavBar } from "@/components/nav-bar";
-import { MainBlock } from "@/components/main-block";
+import { DynamicPastiesArea } from "@/components/dynamic-pasties-area";
 
 import logo from "/pick_n_paste_logo_128.png";
 
@@ -45,14 +45,8 @@ export default function Layout() {
             onMouseLeave={() => setIsCenterBlockHovered(false)}
             className="flex items-end justify-center w-full relative px-2 bg-transparent"
           >
-            <MainBlock
+            <DynamicPastiesArea
               isCompactMode={true}
-              // startView={
-              //   pinView?.pinnedViews
-              //     ? (pinView.pinnedViews[pinView.selectedView]?.centerBlock ??
-              //       "year-bar-view")
-              //     : undefined
-              // }
               blockType="centerBlock"
               selected={"emojies-picker"}
               isHovered={isCenterBlockHovered}

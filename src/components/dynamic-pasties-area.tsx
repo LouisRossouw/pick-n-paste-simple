@@ -1,3 +1,15 @@
+import { useState, useEffect } from "react";
+
+import { cn } from "@/lib/utils";
+import { useApp } from "@/lib/context";
+import type { Mode } from "@/lib/modes";
+
+import {
+  mainItemsOrder,
+  useDynamicComponents,
+  type MainViews,
+} from "@/lib/hooks/use-dynamic-components";
+
 import {
   Carousel,
   type CarouselApi,
@@ -5,17 +17,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useApp } from "@/lib/context";
-import {
-  mainItemsOrder,
-  useMainComponents,
-  type MainViews,
-} from "@/lib/hooks/use-main-components";
-import type { Mode } from "@/lib/modes";
-import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
 
-export function MainBlock({
+export function DynamicPastiesArea({
   isCompactMode,
   startView,
   blockType,
@@ -38,7 +41,7 @@ export function MainBlock({
   // const [selected, setSelected] = useState<string | null>(null);
   const [viewsOrder, setViewsOrder] = useState<MainViews[]>(mainItemsOrder);
 
-  const viewComponents = useMainComponents(selected);
+  const viewComponents = useDynamicComponents(selected);
 
   function handleUpdateMode(mode: Mode) {
     setMode(mode);
