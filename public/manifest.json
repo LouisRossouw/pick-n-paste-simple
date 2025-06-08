@@ -24,6 +24,5 @@
       "description": "Reload the extension" 
     }
   },
-"permissions": ["storage", "tabs", "sidePanel", "scripting", "commands"]
-
+"permissions": ["storage", "sidePanel"]
 }
