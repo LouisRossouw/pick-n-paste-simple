@@ -7,7 +7,7 @@ export function usePreferences() {
     const maybeStartApp = await getStorage("startApp");
 
     if (!maybeStartApp?.startApp) {
-      return "side-panel";
+      return "popup";
     }
 
     return maybeStartApp.startApp;

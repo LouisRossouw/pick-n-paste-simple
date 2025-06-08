@@ -1,7 +1,7 @@
 import { NavBar } from "@/components/nav-bar";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
-import logo from "/Pick_n_Pay_logo_1280_picked.png";
+import logo from "/pick_n_paste_logo_1280_picked_03.png";
 
 export default function Menu() {
   const navigate = useNavigate();

@@ -14,7 +14,7 @@
   "type": "module"
 },
   "icons": {
-    "128": "Pick_n_Pay_logo_350_2.png"
+    "128": "pick_n_paste_logo_128.png"
   },
   "commands": {
     "reload": {

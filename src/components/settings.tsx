@@ -127,7 +127,9 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
       <AccordionItem value="item-3">
         <AccordionTrigger>Contact</AccordionTrigger>
         <AccordionContent className="grid w-full gap-4">
-          <Button
+          <div>Feedback & Support</div>
+          <div>Send an email to louis@louisrossouw.com 😀</div>
+          {/* <Button
             variant={"outline"}
             onClick={() => console.log("todo")}
             className="w-full p-2"
@@ -140,7 +142,7 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
             className="w-full p-2"
           >
             <p className="text-center text-primary text-sm">Support</p>
-          </Button>
+          </Button> */}
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
@@ -160,13 +162,13 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
             <p className="text-center text-primary text-sm">Privacy Policy</p>
           </Button>
 
-          <Button
+          {/* <Button
             variant={"outline"}
             onClick={() => console.log("todo")}
             className="w-full p-2"
           >
             <p className="text-center text-primary text-sm">Terms of User</p>
-          </Button>
+          </Button> */}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

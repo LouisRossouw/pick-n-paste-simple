@@ -1,7 +1,7 @@
 import { NavBar } from "@/components/nav-bar";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router-dom";
-import logo from "/Pick_n_Pay_logo_350.png";
+import logo from "/pick_n_paste_logo_128.png";
 
 export default function Menu() {
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ export default function Menu() {
             logo={
               <img
                 src={chrome.runtime.getURL(logo)}
-                width={20}
-                height={20}
+                width={40}
+                height={40}
                 alt="Pick n Paste"
               />
             }

@@ -4,10 +4,10 @@ export type Mode = { slug: Modes; label: string };
 export const modes = [
   {
     slug: "emojies-picker",
-    label: "Emojies",
+    label: "Emojis",
   },
   {
     slug: "color-picker",
-    label: "Colors",
+    label: "Tailwind colors",
   },
 ] as Mode[];

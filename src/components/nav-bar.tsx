@@ -71,42 +71,44 @@ export function NavBar({
       >
         <div className="flex items-center">{logo}</div>
         <div className="flex w-full items-center justify-center px-4">
-          <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-32" // ensure enough space
-          >
-            <CarouselContent>
-              {categoriesReversed.map((cat, index) => (
-                <CarouselItem key={index} className="basis-1/3">
-                  <div className="flex items-center">
-                    <Button
-                      size="icon"
-                      className="h-6 w-full" // optional: fill available space
-                      style={{
-                        backgroundColor:
-                          mode.slug === "emojies-picker" ? "" : cat.item,
-                      }}
-                      onClick={() => {
-                        setSearch("");
-                        setSelectedCategory(cat.slug);
-                      }}
-                      variant={
-                        selectedCategory === cat.slug ? "outline" : "ghost"
-                      }
-                    >
-                      {mode.slug === "emojies-picker" && (
-                        <span className="text-lg">{cat.item}</span>
-                      )}
-                    </Button>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="bg-transparent border-none" />
-            <CarouselNext className="bg-transparent border-none" />
-          </Carousel>
+          {location.pathname !== "/menu" && (
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="w-32" // ensure enough space
+            >
+              <CarouselContent>
+                {categoriesReversed.map((cat, index) => (
+                  <CarouselItem key={index} className="basis-1/3">
+                    <div className="flex items-center">
+                      <Button
+                        size="icon"
+                        className="h-6 w-full" // optional: fill available space
+                        style={{
+                          backgroundColor:
+                            mode.slug === "emojies-picker" ? "" : cat.item,
+                        }}
+                        onClick={() => {
+                          setSearch("");
+                          setSelectedCategory(cat.slug);
+                        }}
+                        variant={
+                          selectedCategory === cat.slug ? "outline" : "ghost"
+                        }
+                      >
+                        {mode.slug === "emojies-picker" && (
+                          <span className="text-lg">{cat.item}</span>
+                        )}
+                      </Button>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="bg-transparent border-none" />
+              <CarouselNext className="bg-transparent border-none" />
+            </Carousel>
+          )}
         </div>
 
         <div className="flex items-center">

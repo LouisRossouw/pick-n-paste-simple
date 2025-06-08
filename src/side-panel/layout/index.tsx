@@ -9,7 +9,7 @@ import { SearchBox } from "@/components/search-box";
 import { PastCopyBox } from "@/components/past-copy-box";
 import { FooterInfoRow } from "@/components/footer-info-row";
 
-import viteLogo from "/Pick_n_Pay_logo_1280_picked.png";
+import logo from "/pick_n_paste_logo_1280_picked_03.png";
 
 export default function Layout() {
   const navigate = useNavigate();
@@ -35,7 +35,7 @@ export default function Layout() {
             menuFN={() => navigate("menu")}
             logo={
               <img
-                src={chrome.runtime.getURL(viteLogo)}
+                src={chrome.runtime.getURL(logo)}
                 width={120}
                 height={50}
                 alt="Pick n Paste"

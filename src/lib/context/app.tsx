@@ -53,7 +53,7 @@ type AppContextType = {
 
 export const AppContext = createContext<AppContextType>({
   mode: { slug: "emojies-picker", label: "Emojies" },
-  startApp: "side-panel",
+  startApp: "popup",
   setStartApp: () => {},
   theme: "light",
   setTheme: () => {},
@@ -85,7 +85,7 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   const [search, setSearch] = useState("");
-  const [startApp, setStartApp] = useState("side-panel");
+  const [startApp, setStartApp] = useState("popup");
   const [theme, setTheme] = useState<Theme>("light");
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [pastCopyBoxMode, setPastCopyBoxMode] = useState<CBM>("history");
