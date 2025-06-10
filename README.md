@@ -1,7 +1,7 @@
 # 😃 Pick n Paste 🙃
 ## emoji + tailwind color picker Chrome extension
 
-- Compact popup mode - OR - full screen side-panel mode
+- Compact popup mode - OR - full height side-panel mode
 - Built for no reason
 - Maybe expandable
 
