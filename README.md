@@ -1,4 +1,9 @@
-# 😃 Pick n Paste - emoji + tailwind color picker - built for no reason
+# 😃 Pick n Paste 
+## emoji + tailwind color picker
+
+- compact popup mode + full screen side-panel mode
+- built for no reason
+- Maybe expandable
 
 - https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl
 
