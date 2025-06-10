@@ -1,8 +1,8 @@
-## Pick n Paste - emoji + tailwind color picker - built for no reason
+# 😃 Pick n Paste - emoji + tailwind color picker - built for no reason
 
 - https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl
 
-# React + TypeScript + Vite
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
