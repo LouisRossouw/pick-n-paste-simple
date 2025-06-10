@@ -3,9 +3,9 @@ import { AppVersion } from "./app-version";
 
 // TODO; Change this
 export const PRODUCT = {
-  productId: "chrome-ext-product-a",
-  productName: "TimeInProgress Chrome Extension",
-  productUUID: "9c1160c8-42e1-43a1-9e9c-5c2f579ad7bf",
+  productId: "",
+  productName: "",
+  productUUID: "",
 };
 
 const webClient = getWebSiteURL();
