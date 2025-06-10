@@ -1,4 +1,4 @@
-# 😃 Pick n Paste 
+# 😃 Pick n Paste 🙃
 ## emoji + tailwind color picker
 
 - compact popup mode + full screen side-panel mode
