@@ -1,9 +1,10 @@
-# 😃 Pick n Paste 🙃
-## emoji + tailwind color picker Chrome extension
+# 🙂 Pick n Paste 🙃
+## Emoji + Tailwind color picker Chrome extension
 
 - Compact popup mode - OR - full height side-panel mode
 - Built for no reason
 - Maybe expandable
+- Not going to tell you how to run it ;)
 
 - https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl
 
