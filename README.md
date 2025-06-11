@@ -4,6 +4,7 @@
 - Compact popup mode - OR - full height side-panel mode
 - Built for no reason
 - Maybe expandable
+- Inspired by Pick n Pay .. 🤷‍♀️
 - Not going to tell you how to run it ;)
 
 - https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl
