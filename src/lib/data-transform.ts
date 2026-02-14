@@ -1,7 +1,8 @@
 import { type ColorCategory, colorsDataRaw } from "./colors-raw-data.js";
 import { type EmojiCategory, emojiDataRaw } from "./emojies-raw-data.js";
+import { type KaomojiCategory, kaomojiDataRaw } from "./kaomoji-data.js";
 
-type DataTypes = "emojies" | "colors";
+type DataTypes = "emojies" | "colors" | "kaomoji";
 
 export function transformData(dataType: DataTypes, data: any[]) {
   switch (dataType) {
@@ -9,10 +10,12 @@ export function transformData(dataType: DataTypes, data: any[]) {
       return transformEmojies(data);
     case "colors":
       return transformColors(data);
+    case "kaomoji":
+      return transformKaomoji(data);
   }
 }
 
-function transformEmojies(data: EmojiCategory[], supportedVersion = 13) {
+function transformEmojies(data: EmojiCategory[]) {
   return data.map((item) => ({
     label: item.name,
     slug: item.slug,
@@ -43,8 +46,23 @@ function transformColors(data: ColorCategory[]) {
   }));
 }
 
+function transformKaomoji(data: KaomojiCategory[]) {
+  return data.map((item) => ({
+    label: item.name,
+    slug: item.slug,
+    item: item.emoji,
+    items: item.items.map((i) => ({
+      ...i,
+      item: i.emoji,
+      label: i.name,
+      slug: i.slug,
+    })),
+  }));
+}
+
 export const emojiData = transformData("emojies", emojiDataRaw);
 export const colorsData = transformData("colors", colorsDataRaw);
+export const kaomojiData = transformData("kaomoji", kaomojiDataRaw);
 
 export const searchableEmojies = emojiData.flatMap((category) =>
   category.items.map((e) => ({
@@ -66,15 +84,13 @@ export const searchableColors = colorsData.flatMap((category) =>
   }))
 );
 
-function supportsEmoji(emoji: string): boolean {
-  const ctx = document.createElement("canvas").getContext("2d");
-  if (!ctx) return false;
+export const searchableKaomoji = kaomojiData.flatMap((category) =>
+  category.items.map((e: any) => ({
+    slug: e.slug,
+    item: e.item,
+    label: e.label,
+    category: category.label,
+    keywords: `${e.name} ${category.label} ${e.keywords}`.toLowerCase(),
+  }))
+);
 
-  ctx.canvas.width = ctx.canvas.height = 16;
-  ctx.clearRect(0, 0, 16, 16);
-  ctx.fillText(emoji, 0, 12);
-  const pixels = ctx.getImageData(0, 0, 16, 16).data;
-
-  // If any pixel is not blank, we assume the emoji is rendered
-  return Array.from(pixels).some((value) => value !== 0);
-}

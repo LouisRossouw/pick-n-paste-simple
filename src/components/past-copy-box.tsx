@@ -61,18 +61,26 @@ export function PastCopyBox({
 
       <div className="flex w-full gap-2 overflow-hidden">
         {pasties?.map((pastie, index) => {
+          const isColor = pastie.type === "color-picker";
           return (
-            <div className="h-12 w-12">
+            <div key={`${pastie.item}-${index}`} className="h-12 w-12">
               <Button
-                key={index}
-                size={'icon'}
-                className="h-12 w-12"
-                style={{ backgroundColor: pastie.type === 'emojies-picker' ? '' : pastie.item }}
+                size={"icon"}
+                className="h-12 w-12 overflow-hidden"
+                style={{ backgroundColor: isColor ? pastie.item : "transparent" }}
                 onClick={() => {
-                  handleSelected({ item: pastie.item, type: mode.slug });
+                  handleSelected(pastie);
                 }}
-                variant={selected === pastie.item ? 'outline' : 'ghost'}>
-                {pastie.type === 'emojies-picker' && <span className="text-2xl">{pastie.item}</span>}
+                variant={selected === pastie.item ? "outline" : "ghost"}
+              >
+                {!isColor && (
+                  <span className="text-2xl">{pastie.item}</span>
+                )}
+                {isColor && (
+                  <span className="text-[10px] text-white mix-blend-difference opacity-50">
+                    {pastie.label || ''}
+                  </span>
+                )}
               </Button>
             </div>
           );

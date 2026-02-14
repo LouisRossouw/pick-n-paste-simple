@@ -35,7 +35,7 @@ export function Settings({ logo }: { logo: ReactElement }) {
 }
 
 export function AccordionMenu({ logo }: { logo: ReactElement }) {
-  const { theme, setTheme, startApp, setStartApp } = useApp();
+  const { theme, setTheme, startApp, setStartApp, colorFormat, setColorFormat } = useApp();
   const { saveStorage } = useStorge();
 
   const toggleTheme = () => {
@@ -71,7 +71,7 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
       {
         url: "https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl",
       },
-      function (tab) {}
+      function () { }
     );
   }
 
@@ -129,6 +129,22 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
             </div>
             <div className="text-center">
               <p className="text-primary/50 text-sm"></p>
+            </div>
+          </Button>
+          <Button
+            variant={"outline"}
+            onClick={() => {
+              const newFormat = colorFormat === "hex" ? "tailwind" : "hex";
+              setColorFormat(newFormat);
+              saveStorage("colorFormat", newFormat);
+            }}
+            className="grid w-full grid-cols-2 gap-4 p-2"
+          >
+            <div className="text-center">
+              <p className="text-primary text-sm">Color Copy</p>
+            </div>
+            <div className="text-center">
+              <p className="text-primary/50 text-sm">{colorFormat}</p>
             </div>
           </Button>
           <Button

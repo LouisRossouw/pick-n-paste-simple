@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { cn } from "@/lib/utils";
+
 import { useApp, type SearchablePasties } from "@/lib/context";
 
 import { CarouselItem } from "@/components/ui/carousel";
@@ -8,11 +10,15 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import type { PastiesCategory } from "./use-pasties";
 import { RenderEmojies } from "@/components/render-emojies";
+import { RenderKaomoji } from "@/components/render-kaomoji";
 import { RenderColors } from "@/components/render-colors";
+import { FavoritesArea } from "@/components/favorites-area";
+import { SnippetArea } from "@/components/snippet-area";
+import { PaletteArea } from "@/components/palette-area";
 
-export type MainViews = "emojies-picker" | "color-picker";
+export type MainViews = "emojies-picker" | "color-picker" | "kaomoji-picker" | "palettes" | "favorites" | "snippets";
 
-export const mainItemsOrder: MainViews[] = ["emojies-picker", "color-picker"];
+export const mainItemsOrder: MainViews[] = ["emojies-picker", "color-picker", "kaomoji-picker", "palettes", "favorites", "snippets"];
 
 export function useDynamicComponents(selected: string | null) {
   const {
@@ -83,6 +89,39 @@ export function useDynamicComponents(selected: string | null) {
           }
         />
       ),
+      "kaomoji-picker": (
+        <BarContentItem
+          key="kaomoji-picker"
+          chrildren={
+            <RenderKaomoji
+              mode={mode}
+              pasties={pasties}
+              handleSelected={handleSelected}
+              selectedItem={selectedItem}
+            />
+          }
+        />
+      ),
+      "palettes": (
+        <BarContentItem
+          key="palettes"
+          chrildren={<PaletteArea />}
+        />
+      ),
+      "favorites": (
+        <BarContentItem
+          key="favorites"
+          noScroll
+          chrildren={<FavoritesArea />}
+        />
+      ),
+      "snippets": (
+        <BarContentItem
+          key="snippets"
+          noScroll
+          chrildren={<SnippetArea />}
+        />
+      ),
     }),
     [mode, selected, pasties, categories]
   );
@@ -90,11 +129,11 @@ export function useDynamicComponents(selected: string | null) {
   return viewComponents;
 }
 
-function BarContentItem({ chrildren }: { chrildren: React.ReactNode }) {
+function BarContentItem({ chrildren, noScroll }: { chrildren: React.ReactNode, noScroll?: boolean }) {
   return (
     <CarouselItem className="w-[450px]  py-2">
-      <Card className="bg-transparent w-full h-[200px] p-0 m-0">
-        <CardContent className="h-full overflow-y-scroll">
+      <Card className="bg-transparent w-full h-[200px] p-0 m-0 overflow-hidden">
+        <CardContent className={cn("h-full", !noScroll && "overflow-y-scroll")}>
           {chrildren}
         </CardContent>
       </Card>

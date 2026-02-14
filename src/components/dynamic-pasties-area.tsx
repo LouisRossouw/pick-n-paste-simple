@@ -21,7 +21,6 @@ import {
 export function DynamicPastiesArea({
   isCompactMode,
   startView,
-  blockType,
   isHovered,
   selected,
   setSelected,
@@ -47,9 +46,12 @@ export function DynamicPastiesArea({
     setMode(mode);
     setSearch("");
     handleUpdateCategories(mode.slug);
-    setSelectedCategory(
-      mode.slug === "emojies-picker" ? "smileys_emotion" : "all"
-    );
+
+    if (mode.slug === "emojies-picker") {
+      setSelectedCategory("smileys_emotion");
+    } else if (mode.slug === "color-picker") {
+      setSelectedCategory("all");
+    }
   }
 
   useEffect(() => {
@@ -64,10 +66,19 @@ export function DynamicPastiesArea({
       const value = api.selectedScrollSnap() + 1;
       const index1Component = viewComponents[viewsOrder[value - 1]];
 
-      const mode = index1Component?.key as "emojies-picker" | "color-picker";
+      const modeSlug = index1Component?.key as Mode["slug"];
+
+      const labels: Record<string, string> = {
+        "emojies-picker": "Emojis",
+        "color-picker": "Tailwind colors",
+        "kaomoji-picker": "Kaomoji",
+        "palettes": "Palettes",
+        "favorites": "Starred",
+        "snippets": "Snippets"
+      };
 
       setSelected(index1Component?.key);
-      handleUpdateMode({ label: "wee", slug: mode });
+      handleUpdateMode({ label: labels[modeSlug] || "Picker", slug: modeSlug });
     });
   }, [api]);
 
@@ -101,7 +112,7 @@ export function DynamicPastiesArea({
               className={cn(
                 "ml-10 z-20 animate-fadeViewer hover:cursor-pointer",
                 isCompactMode &&
-                  "hover:bg-transparent hover:text-txt-foreground"
+                "hover:bg-transparent hover:text-txt-foreground"
               )}
               variant={"ghost"}
             />
@@ -110,7 +121,7 @@ export function DynamicPastiesArea({
               className={cn(
                 "mr-10 z-20 animate-fadeViewer hover:cursor-pointer",
                 isCompactMode &&
-                  "hover:bg-transparent hover:text-txt-foreground"
+                "hover:bg-transparent hover:text-txt-foreground"
               )}
             />
           </>

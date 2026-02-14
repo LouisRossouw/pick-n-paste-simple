@@ -32,5 +32,6 @@ export function usePreferences() {
   return {
     getStartApp,
     getTheme,
+    getStorage,
   };
 }

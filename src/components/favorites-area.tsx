@@ -1,0 +1,82 @@
+import { useMemo } from "react";
+import { motion } from "motion/react";
+import { Star, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
+import { useApp } from "@/lib/context";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
+
+export function FavoritesArea() {
+    const { favourties, setFavourties, search } = useApp();
+
+    const filteredFavs = useMemo(() => {
+        if (!search) return favourties;
+        const lowSearch = search.toLowerCase();
+        return favourties.filter((f) =>
+            f.item.toLowerCase().includes(lowSearch) ||
+            f.label?.toLowerCase().includes(lowSearch)
+        );
+    }, [favourties, search]);
+
+    function handleCopy(item: string) {
+        navigator.clipboard.writeText(item).then(() => {
+            toast(`${item} copied to clipboard!`);
+        });
+    }
+
+    function removeFavorite(slug: string) {
+        setFavourties((prev) => prev.filter((f) => f.slug !== slug));
+        toast("Removed from favorites");
+    }
+
+    if (favourties.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center h-full text-slate-500 gap-4 p-8 text-center text-sm">
+                <Star className="opacity-20" size={48} />
+                <p>You haven't starred any items yet. Click the star icon on any emoji or color to keep it here!</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex flex-wrap justify-evenly gap-4 p-4">
+            {filteredFavs.map((fav) => {
+                const isColor = fav.type === "color-picker";
+                return (
+                    <motion.div
+                        key={fav.slug}
+                        whileHover={{ scale: 1.05 }}
+                        className="group relative"
+                    >
+                        <Button
+                            variant="outline"
+                            className={cn(
+                                "h-16 w-16 relative flex items-center justify-center overflow-hidden border-2",
+                                isColor ? "border-transparent" : "bg-background"
+                            )}
+                            style={{ backgroundColor: isColor ? fav.item : undefined }}
+                            onClick={() => handleCopy(fav.item)}
+                        >
+                            {!isColor && <span className="text-3xl">{fav.item}</span>}
+                            {isColor && (
+                                <span className="text-[10px] font-bold text-white mix-blend-difference opacity-70">
+                                    {fav.label}
+                                </span>
+                            )}
+                        </Button>
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                removeFavorite(fav.slug!);
+                            }}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                            <Trash2 size={12} />
+                        </button>
+                    </motion.div>
+                );
+            })}
+        </div>
+    );
+}

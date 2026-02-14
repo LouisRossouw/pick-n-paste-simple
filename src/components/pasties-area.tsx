@@ -1,34 +1,63 @@
 import { useState } from "react";
-import { motion } from "motion/react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import type { PastiesCategory } from "@/lib/hooks/use-pasties";
 import { useApp, type SearchablePasties } from "@/lib/context";
-
-import { Button } from "./ui/button";
 import { PastieButton } from "./render-emojies";
+import { RenderKaomoji } from "./render-kaomoji";
+import { RenderColors } from "./render-colors";
+import { FavoritesArea } from "./favorites-area";
+import { SnippetArea } from "./snippet-area";
+import { PaletteArea } from "./palette-area";
+import { Star } from "lucide-react";
 
 export function PastiesArea() {
-  const { search, mode, selectedCategory, filteredPasties, setHistory } =
+  const { search, mode, selectedCategory, filteredPasties, setHistory, favourties, setFavourties, colorFormat } =
     useApp();
 
   const [selected, setSelected] = useState("");
 
   function handleSelected(pasti: PastiesCategory | SearchablePasties) {
-    navigator.clipboard.writeText(pasti.item).then(() => {
-      console.log(`Copied ${pasti.item} to clipboard`);
+    let itemToCopy = pasti.item;
+    if (mode.slug === "color-picker" && colorFormat === "tailwind") {
+      itemToCopy = (pasti as any).label || pasti.item;
+    }
+
+    navigator.clipboard.writeText(itemToCopy).then(() => {
+      console.log(`Copied ${itemToCopy} to clipboard`);
     });
-    toast(`${pasti.item} has been copied to your clipboard!`);
+    toast(`${itemToCopy} has been copied to your clipboard!`);
     setSelected(pasti.slug);
 
     handleHistoryUpdate(pasti);
   }
 
+  function toggleFavorite(pasti: PastiesCategory | SearchablePasties) {
+    const isFav = favourties.some((f) => f.slug === pasti.slug);
+    if (isFav) {
+      setFavourties((prev) => prev.filter((f) => f.slug !== pasti.slug));
+      toast("Removed from favorites");
+    } else {
+      setFavourties((prev) => [
+        {
+          item: pasti.item,
+          type: mode.slug,
+          slug: pasti.slug,
+          label: pasti.label,
+        },
+        ...prev,
+      ]);
+      toast("Added to favorites!");
+    }
+  }
+
   function handleHistoryUpdate(pasti: PastiesCategory | SearchablePasties) {
-    const newItem = {
+    const newItem: any = {
       item: pasti.item.trim(),
       type: mode.slug,
+      slug: pasti.slug,
+      label: pasti.label,
     };
 
     setHistory((prev) => {
@@ -40,6 +69,30 @@ export function PastiesArea() {
   }
 
   const pasties = filteredPasties as any[];
+
+  if (mode.slug === "favorites") {
+    return (
+      <div className="h-full w-full overflow-y-scroll">
+        <FavoritesArea />
+      </div>
+    );
+  }
+
+  if (mode.slug === "snippets") {
+    return (
+      <div className="h-full w-full">
+        <SnippetArea />
+      </div>
+    );
+  }
+
+  if (mode.slug === "palettes") {
+    return (
+      <div className="h-full w-full">
+        <PaletteArea />
+      </div>
+    );
+  }
 
   return (
     <div className="h-full w-full overflow-y-scroll p-4">
@@ -68,114 +121,104 @@ export function PastiesArea() {
             }
 
             return (
-              <PastieButton
-                slug={pasti.slug}
-                handleSelected={() => handleSelected(pasti)}
-                className={"h-12 w-12"}
-                variant={selected === pasti.slug ? "outline" : "ghost"}
-                children={<span className="text-2xl">{pasti.item}</span>}
-              />
+              <div key={pasti.slug} className="group relative">
+                <PastieButton
+                  slug={pasti.slug}
+                  handleSelected={() => handleSelected(pasti)}
+                  className={"h-12 w-12"}
+                  variant={selected === pasti.slug ? "outline" : "ghost"}
+                  children={<span className="text-2xl">{pasti.item}</span>}
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(pasti);
+                  }}
+                  className={cn(
+                    "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity",
+                    favourties.some((f) => f.slug === pasti.slug) && "opacity-100 text-yellow-500"
+                  )}
+                >
+                  <Star size={10} fill={favourties.some((f) => f.slug === pasti.slug) ? "currentColor" : "none"} />
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      )}
+      {mode.slug === "kaomoji-picker" && (
+        <div className="flex w-full flex-wrap justify-evenly gap-2">
+          {pasties?.map((pasti) => {
+            if (selectedCategory === "all" && search.length === 0) {
+              return (
+                <div key={pasti.slug} className="border-b p-4 w-full">
+                  <p className="p-y-4 w-full text-lg mb-2">{pasti.label}</p>
+                  <div className="flex w-full flex-wrap justify-evenly gap-2">
+                    {pasti?.items.map((p: any) => {
+                      const isFav = favourties.some((f) => f.slug === p.slug);
+                      return (
+                        <div key={p.slug} className="group relative">
+                          <RenderKaomoji
+                            mode={mode}
+                            pasties={[p]}
+                            handleSelected={handleSelected}
+                            selectedItem={selected}
+                          />
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleFavorite(p);
+                            }}
+                            className={cn(
+                              "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
+                              isFav && "opacity-100 text-yellow-500"
+                            )}
+                          >
+                            <Star size={10} fill={isFav ? "currentColor" : "none"} />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            }
+
+            const isFav = favourties.some((f) => f.slug === pasti.slug);
+            return (
+              <div key={pasti.slug} className="group relative">
+                <RenderKaomoji
+                  mode={mode}
+                  pasties={[pasti]}
+                  handleSelected={handleSelected}
+                  selectedItem={selected}
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(pasti);
+                  }}
+                  className={cn(
+                    "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
+                    isFav && "opacity-100 text-yellow-500"
+                  )}
+                >
+                  <Star size={10} fill={isFav ? "currentColor" : "none"} />
+                </button>
+              </div>
             );
           })}
         </div>
       )}
       {mode.slug === "color-picker" && (
-        <div className="flex h-full w-full flex-wrap justify-evenly sm:gap-4">
-          {pasties?.map((pasti, index) => {
-            if (selectedCategory === "all" && search.length === 0) {
-              return (
-                <>
-                  <div className="flex w-full flex-wrap justify-evenly sm:gap-2">
-                    {pasti?.items.map((p: any, i: number) => {
-                      const isAxis = i === 0 || index === 0;
-
-                      return (
-                        <motion.div
-                          whileHover={{ scale: isAxis ? 1 : 1.2 }}
-                          whileTap={{ scale: isAxis ? 1 : 1.4 }}
-                        >
-                          <Button
-                            size={"icon"}
-                            key={p.slug}
-                            style={{ backgroundColor: p.item }}
-                            className={cn(
-                              "h-8 w-6 sm:w-12 sm:h-12",
-                              i === 0 && "flex justify-start"
-                            )}
-                            onClick={() => {
-                              if (isAxis) return;
-                              handleSelected(p);
-                            }}
-                            variant={selected === p.slug ? "outline" : "ghost"}
-                          >
-                            {i === 0 && (
-                              <span className="text-xs text-gray-500">
-                                {p.label}
-                              </span>
-                            )}
-                            {index === 0 && (
-                              <span className="text-xs text-gray-500">
-                                {p.label}
-                              </span>
-                            )}
-                          </Button>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-                </>
-              );
-            }
-
-            return (
-              <div className="flex flex-col items-evenly w-full h-full gap-2">
-                {search?.length === 0 ? (
-                  <>
-                    {pasti?.items?.map((i: any) => {
-                      return (
-                        <Button
-                          size={"icon"}
-                          key={i.slug}
-                          style={{ backgroundColor: i.item }}
-                          className="flex h-full w-full"
-                          onClick={() => {
-                            handleSelected(i);
-                          }}
-                          variant={selected === i.slug ? "outline" : "ghost"}
-                        >
-                          <span className="text-xs text-gray-500">
-                            {i.label}
-                          </span>
-                        </Button>
-                      );
-                    })}
-                  </>
-                ) : (
-                  <>
-                    {pasties?.map((i) => {
-                      return (
-                        <Button
-                          size={"icon"}
-                          key={i.slug}
-                          style={{ backgroundColor: i.item }}
-                          className="flex h-full w-full"
-                          onClick={() => {
-                            handleSelected(i);
-                          }}
-                          variant={selected === i.slug ? "outline" : "ghost"}
-                        >
-                          <span className="text-xs text-gray-500">
-                            {i.label}
-                          </span>
-                        </Button>
-                      );
-                    })}
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
+        <RenderColors
+          mode={mode}
+          pasties={pasties}
+          handleSelected={handleSelected}
+          selected={selected}
+          search={search}
+          selectedCategory={selectedCategory}
+        />
       )}
     </div>
   );
