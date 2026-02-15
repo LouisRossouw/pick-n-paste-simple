@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+// import { Search, X } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/context";
 
 import { Input } from "@/components/ui/input";
+// import { Button } from "@/components/ui/button";
 import { NavBar } from "@/components/nav-bar";
 import { DynamicPastiesArea } from "@/components/dynamic-pasties-area";
 
@@ -14,6 +17,8 @@ export default function Layout() {
   const navigate = useNavigate();
 
   const { search, setSearch } = useApp();
+
+  // const [isSearching, setIsSearching] = useState(false);
 
   // hovered blocks
   const [isCenterBlockHovered, setIsCenterBlockHovered] = useState(false);
@@ -43,7 +48,7 @@ export default function Layout() {
           <div
             onMouseEnter={() => setIsCenterBlockHovered(true)}
             onMouseLeave={() => setIsCenterBlockHovered(false)}
-            className="flex items-end justify-center w-full relative px-2 bg-transparent"
+            className="flex items-end justify-center w-full relative px-4 bg-transparent"
           >
             <DynamicPastiesArea
               isCompactMode={true}
@@ -56,20 +61,44 @@ export default function Layout() {
           <div
             onMouseEnter={() => setIsBottomBlockHovered(true)}
             onMouseLeave={() => setIsBottomBlockHovered(false)}
-            className="flex items-center justify-evenly w-full h-10 gap-4 px-2"
+            className="flex items-center w-full h-10 px-2 mb-2 gap-2"
           >
-            <div className="w-2/3 mb-2">
-              <Input
-                value={search}
-                placeholder="Search.."
-                onChange={(v) => setSearch(v.target.value)}
-                className={cn(
-                  "text-center border-b-none",
-                  "focus-visible:ring-none border-none",
-                  "focus-visible:border-none focus-visible:ring-[0px]"
-                )}
-              />
-            </div>
+            {/* <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setIsSearching(!isSearching);
+                if (isSearching) setSearch("");
+              }}
+              className="h-6 w-6 p-0 rounded-full hover:bg-secondary/20 transition-colors"
+            >
+              {isSearching ? (
+                <X size={16} className="opacity-60" />
+              ) : (
+                <Search size={16} className="opacity-60" />
+              )}
+            </Button> */}
+
+            <AnimatePresence>
+              <motion.div
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: "100%", opacity: 1 }}
+                exit={{ width: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="flex-1 px-8 flex items-center border-transparent overflow-hidden"
+              >
+                <Input
+                  autoFocus
+                  value={search}
+                  placeholder="Search.."
+                  onChange={(v) => setSearch(v.target.value)}
+                  className={cn(
+                    "text-center border-none shadow-none focus-visible:ring-0 focus-visible:ring-offset-0",
+                    "bg-transparent h-8 text-xs font-inter",
+                  )}
+                />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

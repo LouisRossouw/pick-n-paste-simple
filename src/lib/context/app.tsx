@@ -12,14 +12,17 @@ import {
 import {
   colorsData,
   emojiData,
+  kaomojiData,
   searchableColors,
   searchableEmojies,
+  searchableKaomoji,
 } from "@/lib/data-transform.js";
-import { usePreferences } from "../hooks/use-preferences";
+import { usePreferences } from "@/lib//hooks/use-preferences";
 
-type CBM = "history" | "favourite";
 type Theme = "light" | "dark";
+type CBM = "history" | "favourite";
 type StartApp = "side-panel" | "popup";
+export type ColorFormat = "hex" | "tailwind";
 
 export type SearchablePasties = {
   slug: string;
@@ -46,9 +49,19 @@ type AppContextType = {
   setHistory: React.Dispatch<React.SetStateAction<HistoryType[]>>;
   favourties: HistoryType[];
   setFavourties: React.Dispatch<React.SetStateAction<HistoryType[]>>;
+  snippets: HistoryType[];
+  setSnippets: React.Dispatch<React.SetStateAction<HistoryType[]>>;
+  palettes: any[];
+  setPalettes: React.Dispatch<React.SetStateAction<any[]>>;
   pastCopyBoxMode: CBM;
   setPastCopyBoxMode: (v: CBM) => void;
+  colorFormat: ColorFormat;
+  setColorFormat: (v: ColorFormat) => void;
   handleUpdateCategories: (v: Modes) => void;
+  isAddingSnippet: boolean;
+  setIsAddingSnippet: (v: boolean) => void;
+  isAddingPalette: boolean;
+  setIsAddingPalette: (v: boolean) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
@@ -68,9 +81,19 @@ export const AppContext = createContext<AppContextType>({
   setHistory: () => {},
   favourties: [],
   setFavourties: () => {},
+  snippets: [],
+  setSnippets: () => {},
+  palettes: [],
+  setPalettes: () => {},
   pastCopyBoxMode: "history",
   setPastCopyBoxMode: () => {},
+  colorFormat: "hex",
+  setColorFormat: () => {},
   handleUpdateCategories: () => {},
+  isAddingSnippet: false,
+  setIsAddingSnippet: () => {},
+  isAddingPalette: false,
+  setIsAddingPalette: () => {},
 });
 
 const defaultMode = {
@@ -79,8 +102,8 @@ const defaultMode = {
 } as Mode;
 
 export const AppContextProvider = ({ children }: PropsWithChildren) => {
-  const { getStartApp, getTheme } = usePreferences();
-  const pasties = usePasties();
+  const { getStartApp, getTheme, getStorage } = usePreferences();
+  const { palettes, setPalettes, ...pasties } = usePasties();
 
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -89,14 +112,21 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
   const [theme, setTheme] = useState<Theme>("light");
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [pastCopyBoxMode, setPastCopyBoxMode] = useState<CBM>("history");
+  const [colorFormat, setColorFormat] = useState<ColorFormat>("hex");
+  const [isAddingSnippet, setIsAddingSnippet] = useState(false);
+  const [isAddingPalette, setIsAddingPalette] = useState(false);
 
   useEffect(() => {
     const init = async () => {
       const startApp = await getStartApp(); // Could maybe Remove this and call it directly in the settings menu
       const theme = (await getTheme()) as Theme;
+      const storedColorFormat = await getStorage("colorFormat");
 
       setTheme(theme);
       setStartApp(startApp);
+      if (storedColorFormat?.colorFormat) {
+        setColorFormat(storedColorFormat.colorFormat);
+      }
 
       if (theme) {
         setHasMounted(true);
@@ -113,6 +143,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 
     if (mode.slug === "color-picker") {
       return isAll ? colorsData : colorsData.filter((e) => e.slug === cat);
+    } else if (mode.slug === "kaomoji-picker") {
+      return isAll ? kaomojiData : kaomojiData.filter((e) => e.slug === cat);
     } else {
       const maybePasties = isAll
         ? emojiData
@@ -127,17 +159,21 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 
     if (mode.slug === "color-picker") {
       return searchableColors.filter((e) =>
-        e.keywords.includes(search.toLowerCase())
+        e.keywords.includes(search.toLowerCase()),
+      );
+    } else if (mode.slug === "kaomoji-picker") {
+      return searchableKaomoji.filter((e) =>
+        e.keywords.includes(search.toLowerCase()),
       );
     } else {
       return searchableEmojies.filter((e) =>
-        e.keywords.includes(search.toLowerCase())
+        e.keywords.includes(search.toLowerCase()),
       );
     }
   }, [search]);
 
   if (!hasMounted) {
-    return <div></div>;
+    return null;
   }
 
   return (
@@ -155,6 +191,14 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         filteredPasties: search.length > 0 ? searchedPasties : filteredPasties,
         pastCopyBoxMode,
         setPastCopyBoxMode,
+        colorFormat,
+        setColorFormat,
+        palettes,
+        setPalettes,
+        isAddingSnippet,
+        setIsAddingSnippet,
+        isAddingPalette,
+        setIsAddingPalette,
       }}
     >
       {children}
