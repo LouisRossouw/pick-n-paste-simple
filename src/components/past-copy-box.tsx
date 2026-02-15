@@ -1,10 +1,11 @@
-import { Clipboard, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { useState } from 'react';
-import type { HistoryType } from '@/lib/hooks/use-pasties';
-import type { Mode } from '@/lib/modes';
+import { useState } from "react";
+import { Clipboard, X } from "lucide-react";
+import { toast } from "sonner";
 
+import type { Mode } from "@/lib/modes";
+import type { HistoryType } from "@/lib/hooks/use-pasties";
+
+import { Button } from "@/components/ui/button";
 
 export function PastCopyBox({
   mode,
@@ -17,7 +18,7 @@ export function PastCopyBox({
   setHistory: React.Dispatch<React.SetStateAction<HistoryType[]>>;
   clearBox: () => void;
 }) {
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState("");
 
   function handleSelected(pasti: HistoryType) {
     setSelected(pasti.item);
@@ -30,7 +31,7 @@ export function PastCopyBox({
   }
 
   function handleSelectAll() {
-    const pastiesToCopy = pasties.join('');
+    const pastiesToCopy = pasties.join("");
     navigator.clipboard.writeText(pastiesToCopy).then(() => {
       console.log(`Copied ${pastiesToCopy} to clipboard`);
     });
@@ -43,8 +44,10 @@ export function PastCopyBox({
       type: mode.slug,
     };
 
-    setHistory(prev => {
-      const withoutDuplicate = prev.filter(h => h.item.trim().toLowerCase() !== newItem.item.toLowerCase());
+    setHistory((prev) => {
+      const withoutDuplicate = prev.filter(
+        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase(),
+      );
       return [newItem, ...withoutDuplicate.slice(0, 19)];
     });
   }
@@ -53,7 +56,12 @@ export function PastCopyBox({
     <div className="flex w-full gap-4">
       {pasties.length > 0 && (
         <div className="flex items-center justify-center gap-2 border-r">
-          <Button className="h-12 w-12" variant={'ghost'} size={'icon'} onClick={handleSelectAll}>
+          <Button
+            className="h-12 w-12"
+            variant={"ghost"}
+            size={"icon"}
+            onClick={handleSelectAll}
+          >
             <Clipboard size={18} />
           </Button>
         </div>
@@ -67,18 +75,18 @@ export function PastCopyBox({
               <Button
                 size={"icon"}
                 className="h-12 w-12 overflow-hidden"
-                style={{ backgroundColor: isColor ? pastie.item : "transparent" }}
+                style={{
+                  backgroundColor: isColor ? pastie.item : "transparent",
+                }}
                 onClick={() => {
                   handleSelected(pastie);
                 }}
                 variant={selected === pastie.item ? "outline" : "ghost"}
               >
-                {!isColor && (
-                  <span className="text-2xl">{pastie.item}</span>
-                )}
+                {!isColor && <span className="text-2xl">{pastie.item}</span>}
                 {isColor && (
-                  <span className="text-[10px] text-white mix-blend-difference opacity-50">
-                    {pastie.label || ''}
+                  <span className="text-[10px] mix-blend-difference opacity-50">
+                    {pastie.label || ""}
                   </span>
                 )}
               </Button>
@@ -88,7 +96,12 @@ export function PastCopyBox({
       </div>
       {pasties.length > 0 && (
         <div className="flex items-center justify-center gap-2 border-l">
-          <Button className="h-12 w-12" variant={'ghost'} size={'icon'} onClick={clearBox}>
+          <Button
+            className="h-12 w-12"
+            variant={"ghost"}
+            size={"icon"}
+            onClick={clearBox}
+          >
             <X size={18} />
           </Button>
         </div>

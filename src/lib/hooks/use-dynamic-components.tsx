@@ -6,19 +6,32 @@ import { cn } from "@/lib/utils";
 import { useApp, type SearchablePasties } from "@/lib/context";
 
 import { CarouselItem } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
-
-import type { PastiesCategory } from "./use-pasties";
-import { RenderEmojies } from "@/components/render-emojies";
-import { RenderKaomoji } from "@/components/render-kaomoji";
-import { RenderColors } from "@/components/render-colors";
-import { FavoritesArea } from "@/components/favorites-area";
 import { SnippetArea } from "@/components/snippet-area";
 import { PaletteArea } from "@/components/palette-area";
+import { Card, CardContent } from "@/components/ui/card";
+import { RenderColors } from "@/components/render-colors";
+import { RenderEmojies } from "@/components/render-emojies";
+import { RenderKaomoji } from "@/components/render-kaomoji";
+import { FavoritesArea } from "@/components/favorites-area";
 
-export type MainViews = "emojies-picker" | "color-picker" | "kaomoji-picker" | "palettes" | "favorites" | "snippets";
+import type { PastiesCategory } from "./use-pasties";
 
-export const mainItemsOrder: MainViews[] = ["emojies-picker", "color-picker", "kaomoji-picker", "palettes", "favorites", "snippets"];
+export type MainViews =
+  | "emojies-picker"
+  | "color-picker"
+  | "kaomoji-picker"
+  | "palettes"
+  | "favorites"
+  | "snippets";
+
+export const mainItemsOrder: MainViews[] = [
+  "emojies-picker",
+  "color-picker",
+  "kaomoji-picker",
+  "palettes",
+  "favorites",
+  "snippets",
+];
 
 export function useDynamicComponents(selected: string | null) {
   const {
@@ -51,7 +64,7 @@ export function useDynamicComponents(selected: string | null) {
 
     setHistory((prev) => {
       const withoutDuplicate = prev.filter(
-        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase()
+        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase(),
       );
       return [newItem, ...withoutDuplicate.slice(0, 19)];
     });
@@ -102,34 +115,31 @@ export function useDynamicComponents(selected: string | null) {
           }
         />
       ),
-      "palettes": (
-        <BarContentItem
-          key="palettes"
-          chrildren={<PaletteArea />}
-        />
-      ),
-      "favorites": (
+      palettes: <BarContentItem key="palettes" chrildren={<PaletteArea />} />,
+      favorites: (
         <BarContentItem
           key="favorites"
           noScroll
           chrildren={<FavoritesArea />}
         />
       ),
-      "snippets": (
-        <BarContentItem
-          key="snippets"
-          noScroll
-          chrildren={<SnippetArea />}
-        />
+      snippets: (
+        <BarContentItem key="snippets" noScroll chrildren={<SnippetArea />} />
       ),
     }),
-    [mode, selected, pasties, categories]
+    [mode, selected, pasties, categories],
   );
 
   return viewComponents;
 }
 
-function BarContentItem({ chrildren, noScroll }: { chrildren: React.ReactNode, noScroll?: boolean }) {
+function BarContentItem({
+  chrildren,
+  noScroll,
+}: {
+  chrildren: React.ReactNode;
+  noScroll?: boolean;
+}) {
   return (
     <CarouselItem className="w-[450px]  py-2">
       <Card className="bg-transparent w-full h-[200px] p-0 m-0 overflow-hidden">

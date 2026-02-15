@@ -1,4 +1,10 @@
-export type Modes = "emojies-picker" | "color-picker" | "favorites" | "snippets" | "kaomoji-picker" | "palettes";
+export type Modes =
+  | "emojies-picker"
+  | "color-picker"
+  | "favorites"
+  | "snippets"
+  | "kaomoji-picker"
+  | "palettes";
 export type Mode = { slug: Modes; label: string };
 
 export const modes = [

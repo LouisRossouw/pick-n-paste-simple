@@ -71,7 +71,7 @@ export const searchableEmojies = emojiData.flatMap((category) =>
     label: e.label,
     category: category.label,
     keywords: `${e.name} ${category.label}`.toLowerCase(),
-  }))
+  })),
 );
 
 export const searchableColors = colorsData.flatMap((category) =>
@@ -81,7 +81,7 @@ export const searchableColors = colorsData.flatMap((category) =>
     label: e.label,
     category: category.label,
     keywords: `${e.name} ${e.labelExtra} ${category.label}`.toLowerCase(),
-  }))
+  })),
 );
 
 export const searchableKaomoji = kaomojiData.flatMap((category) =>
@@ -91,6 +91,5 @@ export const searchableKaomoji = kaomojiData.flatMap((category) =>
     label: e.label,
     category: category.label,
     keywords: `${e.name} ${category.label} ${e.keywords}`.toLowerCase(),
-  }))
+  })),
 );
-

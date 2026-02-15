@@ -17,7 +17,12 @@ export type PastiesCategory = {
   items: any[];
 };
 
-export type HistoryType = { item: string; type: Modes; slug?: string; label?: string };
+export type HistoryType = {
+  item: string;
+  type: Modes;
+  slug?: string;
+  label?: string;
+};
 
 export type Palette = {
   id: string;
@@ -26,6 +31,8 @@ export type Palette = {
 };
 
 export function usePasties() {
+  const { getStorage, saveStorage } = useStorge();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("smileys_emotion");
 
@@ -33,30 +40,6 @@ export function usePasties() {
   const [favourties, setFavourties] = useState<HistoryType[]>([]);
   const [snippets, setSnippets] = useState<HistoryType[]>([]);
   const [palettes, setPalettes] = useState<Palette[]>([]);
-
-  const { getStorage, saveStorage } = useStorge();
-
-  function buildCategories(mode?: Modes) {
-    let selMode: PastiesCategory[] | undefined = undefined;
-
-    if (mode === "color-picker") {
-      selMode = colorsData;
-    } else if (mode === "emojies-picker") {
-      selMode = emojiData;
-    } else if (mode === "kaomoji-picker") {
-      selMode = kaomojiData;
-    }
-
-    const categories: Category[] = [];
-    selMode?.forEach((c) => {
-      categories.push({ slug: c.slug, item: c.item });
-    });
-    return categories;
-  }
-
-  function handleUpdateCategories(mode: Modes) {
-    setCategories(buildCategories(mode));
-  }
 
   useEffect(() => {
     setCategories(buildCategories());
@@ -108,6 +91,28 @@ export function usePasties() {
       saveStorage("palettes", palettes);
     }
   }, [palettes]);
+
+  function buildCategories(mode?: Modes) {
+    let selMode: PastiesCategory[] | undefined = undefined;
+
+    if (mode === "color-picker") {
+      selMode = colorsData;
+    } else if (mode === "emojies-picker") {
+      selMode = emojiData;
+    } else if (mode === "kaomoji-picker") {
+      selMode = kaomojiData;
+    }
+
+    const categories: Category[] = [];
+    selMode?.forEach((c) => {
+      categories.push({ slug: c.slug, item: c.item });
+    });
+    return categories;
+  }
+
+  function handleUpdateCategories(mode: Modes) {
+    setCategories(buildCategories(mode));
+  }
 
   return {
     categories,

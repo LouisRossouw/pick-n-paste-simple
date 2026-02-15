@@ -17,7 +17,7 @@ import {
   searchableEmojies,
   searchableKaomoji,
 } from "@/lib/data-transform.js";
-import { usePreferences } from "../hooks/use-preferences";
+import { usePreferences } from "@/lib//hooks/use-preferences";
 
 type Theme = "light" | "dark";
 type CBM = "history" | "favourite";
@@ -63,29 +63,29 @@ type AppContextType = {
 export const AppContext = createContext<AppContextType>({
   mode: { slug: "emojies-picker", label: "Emojies" },
   startApp: "popup",
-  setStartApp: () => { },
+  setStartApp: () => {},
   theme: "light",
-  setTheme: () => { },
-  setMode: () => { },
+  setTheme: () => {},
+  setMode: () => {},
   search: "",
-  setSearch: () => { },
+  setSearch: () => {},
   categories: [],
   selectedCategory: "",
-  setSelectedCategory: () => { },
+  setSelectedCategory: () => {},
   filteredPasties: [],
   history: [],
-  setHistory: () => { },
+  setHistory: () => {},
   favourties: [],
-  setFavourties: () => { },
+  setFavourties: () => {},
   snippets: [],
-  setSnippets: () => { },
+  setSnippets: () => {},
   palettes: [],
-  setPalettes: () => { },
+  setPalettes: () => {},
   pastCopyBoxMode: "history",
-  setPastCopyBoxMode: () => { },
+  setPastCopyBoxMode: () => {},
   colorFormat: "hex",
-  setColorFormat: () => { },
-  handleUpdateCategories: () => { },
+  setColorFormat: () => {},
+  handleUpdateCategories: () => {},
 });
 
 const defaultMode = {
@@ -149,15 +149,15 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
 
     if (mode.slug === "color-picker") {
       return searchableColors.filter((e) =>
-        e.keywords.includes(search.toLowerCase())
+        e.keywords.includes(search.toLowerCase()),
       );
     } else if (mode.slug === "kaomoji-picker") {
       return searchableKaomoji.filter((e) =>
-        e.keywords.includes(search.toLowerCase())
+        e.keywords.includes(search.toLowerCase()),
       );
     } else {
       return searchableEmojies.filter((e) =>
-        e.keywords.includes(search.toLowerCase())
+        e.keywords.includes(search.toLowerCase()),
       );
     }
   }, [search]);

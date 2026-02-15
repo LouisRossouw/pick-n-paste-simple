@@ -34,10 +34,8 @@ export function DynamicPastiesArea({
 }) {
   const { setMode, setSearch, handleUpdateCategories, setSelectedCategory } =
     useApp();
-  // const [count, setCount] = useState(0);
-  // const [current, setCurrent] = useState(0);
+
   const [api, setApi] = useState<CarouselApi>();
-  // const [selected, setSelected] = useState<string | null>(null);
   const [viewsOrder, setViewsOrder] = useState<MainViews[]>(mainItemsOrder);
 
   const viewComponents = useDynamicComponents(selected);
@@ -72,9 +70,9 @@ export function DynamicPastiesArea({
         "emojies-picker": "Emojis",
         "color-picker": "Tailwind colors",
         "kaomoji-picker": "Kaomoji",
-        "palettes": "Palettes",
-        "favorites": "Starred",
-        "snippets": "Snippets"
+        palettes: "Palettes",
+        favorites: "Starred",
+        snippets: "Snippets",
       };
 
       setSelected(index1Component?.key);
@@ -99,7 +97,7 @@ export function DynamicPastiesArea({
       <Carousel
         className={cn(
           "w-full h-full justify-center items-center flex",
-          isCompactMode ? "px-4" : "px-8"
+          isCompactMode ? "px-4" : "px-8",
         )}
         setApi={setApi}
       >
@@ -112,7 +110,7 @@ export function DynamicPastiesArea({
               className={cn(
                 "ml-10 z-20 animate-fadeViewer hover:cursor-pointer",
                 isCompactMode &&
-                "hover:bg-transparent hover:text-txt-foreground"
+                  "hover:bg-transparent hover:text-txt-foreground",
               )}
               variant={"ghost"}
             />
@@ -121,7 +119,7 @@ export function DynamicPastiesArea({
               className={cn(
                 "mr-10 z-20 animate-fadeViewer hover:cursor-pointer",
                 isCompactMode &&
-                "hover:bg-transparent hover:text-txt-foreground"
+                  "hover:bg-transparent hover:text-txt-foreground",
               )}
             />
           </>

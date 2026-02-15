@@ -1,4 +1,11 @@
 import { type ReactElement } from "react";
+import { useNavigate } from "react-router";
+
+import { ArrowLeft, Moon, Sun } from "lucide-react";
+
+import { useApp } from "@/lib/context";
+import { useStorge } from "@/lib/hooks/use-storage";
+
 import {
   Accordion,
   AccordionItem,
@@ -7,11 +14,6 @@ import {
 } from "./ui/accordion";
 import { Button } from "./ui/button";
 import { CreatedBy } from "./created-by";
-
-import { ArrowLeft, Moon, Sun } from "lucide-react";
-import { useNavigate } from "react-router";
-import { useApp } from "@/lib/context";
-import { useStorge } from "@/lib/hooks/use-storage";
 
 export function Settings({ logo }: { logo: ReactElement }) {
   const navigate = useNavigate();
@@ -35,7 +37,14 @@ export function Settings({ logo }: { logo: ReactElement }) {
 }
 
 export function AccordionMenu({ logo }: { logo: ReactElement }) {
-  const { theme, setTheme, startApp, setStartApp, colorFormat, setColorFormat } = useApp();
+  const {
+    theme,
+    setTheme,
+    startApp,
+    setStartApp,
+    colorFormat,
+    setColorFormat,
+  } = useApp();
   const { saveStorage } = useStorge();
 
   const toggleTheme = () => {
@@ -71,7 +80,7 @@ export function AccordionMenu({ logo }: { logo: ReactElement }) {
       {
         url: "https://chromewebstore.google.com/detail/pick-n-paste/igiikokiabnkbcchkelhhpificbjjjjl",
       },
-      function () { }
+      function () {},
     );
   }
 

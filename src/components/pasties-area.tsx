@@ -11,10 +11,19 @@ import { FavoritesArea } from "./favorites-area";
 import { SnippetArea } from "./snippet-area";
 import { PaletteArea } from "./palette-area";
 import { Star } from "lucide-react";
+import { Button } from "./ui/button";
 
 export function PastiesArea() {
-  const { search, mode, selectedCategory, filteredPasties, setHistory, favourties, setFavourties, colorFormat } =
-    useApp();
+  const {
+    search,
+    mode,
+    selectedCategory,
+    filteredPasties,
+    setHistory,
+    favourties,
+    setFavourties,
+    colorFormat,
+  } = useApp();
 
   const [selected, setSelected] = useState("");
 
@@ -62,7 +71,7 @@ export function PastiesArea() {
 
     setHistory((prev) => {
       const withoutDuplicate = prev.filter(
-        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase()
+        (h) => h.item.trim().toLowerCase() !== newItem.item.toLowerCase(),
       );
       return [newItem, ...withoutDuplicate.slice(0, 19)];
     });
@@ -108,8 +117,8 @@ export function PastiesArea() {
                       return (
                         <PastieButton
                           slug={pasti.slug}
-                          handleSelected={() => handleSelected(pasti)}
                           className={"h-12 w-12"}
+                          handleSelected={() => handleSelected(pasti)}
                           variant={selected === p.slug ? "outline" : "ghost"}
                           children={<span className="text-2xl">{p.item}</span>}
                         />
@@ -129,18 +138,26 @@ export function PastiesArea() {
                   variant={selected === pasti.slug ? "outline" : "ghost"}
                   children={<span className="text-2xl">{pasti.item}</span>}
                 />
-                <button
+                <Button
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleFavorite(pasti);
                   }}
                   className={cn(
                     "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity",
-                    favourties.some((f) => f.slug === pasti.slug) && "opacity-100 text-yellow-500"
+                    favourties.some((f) => f.slug === pasti.slug) &&
+                      "opacity-100 text-yellow-500",
                   )}
                 >
-                  <Star size={10} fill={favourties.some((f) => f.slug === pasti.slug) ? "currentColor" : "none"} />
-                </button>
+                  <Star
+                    size={10}
+                    fill={
+                      favourties.some((f) => f.slug === pasti.slug)
+                        ? "currentColor"
+                        : "none"
+                    }
+                  />
+                </Button>
               </div>
             );
           })}
@@ -164,18 +181,21 @@ export function PastiesArea() {
                             handleSelected={handleSelected}
                             selectedItem={selected}
                           />
-                          <button
+                          <Button
                             onClick={(e) => {
                               e.stopPropagation();
                               toggleFavorite(p);
                             }}
                             className={cn(
                               "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
-                              isFav && "opacity-100 text-yellow-500"
+                              isFav && "opacity-100 text-yellow-500",
                             )}
                           >
-                            <Star size={10} fill={isFav ? "currentColor" : "none"} />
-                          </button>
+                            <Star
+                              size={10}
+                              fill={isFav ? "currentColor" : "none"}
+                            />
+                          </Button>
                         </div>
                       );
                     })}
@@ -193,18 +213,18 @@ export function PastiesArea() {
                   handleSelected={handleSelected}
                   selectedItem={selected}
                 />
-                <button
+                <Button
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleFavorite(pasti);
                   }}
                   className={cn(
                     "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
-                    isFav && "opacity-100 text-yellow-500"
+                    isFav && "opacity-100 text-yellow-500",
                   )}
                 >
                   <Star size={10} fill={isFav ? "currentColor" : "none"} />
-                </button>
+                </Button>
               </div>
             );
           })}
