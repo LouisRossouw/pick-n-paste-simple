@@ -9,17 +9,22 @@ import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 
 export function FavoritesArea() {
-  const { favourties, setFavourties, search } = useApp();
+  const { favourties, setFavourties, search, selectedCategory } = useApp();
 
   const filteredFavs = useMemo(() => {
-    if (!search) return favourties;
+    let items = favourties;
+    if (selectedCategory !== "all") {
+      items = items.filter((f: any) => f.type === selectedCategory);
+    }
+
+    if (!search) return items;
     const lowSearch = search.toLowerCase();
-    return favourties.filter(
-      (f) =>
+    return items.filter(
+      (f: any) =>
         f.item.toLowerCase().includes(lowSearch) ||
         f.label?.toLowerCase().includes(lowSearch),
     );
-  }, [favourties, search]);
+  }, [favourties, search, selectedCategory]);
 
   function handleCopy(item: string) {
     navigator.clipboard.writeText(item).then(() => {
@@ -57,13 +62,13 @@ export function FavoritesArea() {
             <Button
               variant="outline"
               className={cn(
-                "h-16 w-16 relative flex items-center justify-center overflow-hidden border-2",
+                "h-10 w-10 relative flex items-center justify-center overflow-hidden border-2",
                 isColor ? "border-transparent" : "bg-background",
               )}
               style={{ backgroundColor: isColor ? fav.item : undefined }}
               onClick={() => handleCopy(fav.item)}
             >
-              {!isColor && <span className="text-3xl">{fav.item}</span>}
+              {!isColor && <span className="text-xl">{fav.item}</span>}
               {isColor && (
                 <span className="text-[10px] font-bold text-white mix-blend-difference opacity-70">
                   {fav.label}

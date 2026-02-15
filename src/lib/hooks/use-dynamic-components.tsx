@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { motion } from "motion/react";
 import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
@@ -28,9 +29,9 @@ export const mainItemsOrder: MainViews[] = [
   "emojies-picker",
   "color-picker",
   "kaomoji-picker",
+  "snippets",
   "palettes",
   "favorites",
-  "snippets",
 ];
 
 export function useDynamicComponents(selected: string | null) {
@@ -141,10 +142,17 @@ function BarContentItem({
   noScroll?: boolean;
 }) {
   return (
-    <CarouselItem className="w-[450px]  py-2">
-      <Card className="bg-transparent w-full h-[200px] p-0 m-0 overflow-hidden">
+    <CarouselItem className="w-[450px] py-2">
+      <Card className="bg-transparent border-none shadow-none rounded-none w-full h-[200px] p-0 m-0 overflow-hidden">
         <CardContent className={cn("h-full", !noScroll && "overflow-y-scroll")}>
-          {chrildren}
+          <motion.div
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="h-full"
+          >
+            {chrildren}
+          </motion.div>
         </CardContent>
       </Card>
     </CarouselItem>

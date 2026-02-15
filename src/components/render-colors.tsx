@@ -133,14 +133,15 @@ export function RenderColors({
                           </Button>
                         </motion.div>
                         {!isAxis && (
-                          <div className="absolute -top-1 -right-1 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 scale-75">
+                          <div className="absolute -top-6 -right-1 flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 scale-75">
                             <Button
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toggleFavorite(p);
                               }}
+                              size={"sm"}
                               className={cn(
-                                "p-0.5 rounded-full bg-background border shadow-sm",
+                                "p-0.5 w-6 h-6",
                                 isFav && "text-yellow-500",
                               )}
                             >
@@ -150,11 +151,12 @@ export function RenderColors({
                               />
                             </Button>
                             <Button
+                              size={"sm"}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 addColorToPalette(p);
                               }}
-                              className="bg-primary text-primary-foreground rounded-full p-0.5"
+                              className="p-0.5 w-6 h-6"
                             >
                               <Plus size={10} />
                             </Button>

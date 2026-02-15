@@ -40,9 +40,10 @@ export function usePasties() {
   const [favourties, setFavourties] = useState<HistoryType[]>([]);
   const [snippets, setSnippets] = useState<HistoryType[]>([]);
   const [palettes, setPalettes] = useState<Palette[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setCategories(buildCategories());
+    setCategories(buildCategories("emojies-picker"));
   }, []);
 
   useEffect(() => {
@@ -64,33 +65,34 @@ export function usePasties() {
       if (storedPalettes?.palettes) {
         setPalettes(storedPalettes.palettes);
       }
+      setIsLoaded(true);
     };
     loadPersistence();
   }, []);
 
   useEffect(() => {
-    if (history.length > 0) {
+    if (isLoaded) {
       saveStorage("history", history);
     }
-  }, [history]);
+  }, [history, isLoaded, saveStorage]);
 
   useEffect(() => {
-    if (favourties.length > 0) {
+    if (isLoaded) {
       saveStorage("favorites", favourties);
     }
-  }, [favourties]);
+  }, [favourties, isLoaded, saveStorage]);
 
   useEffect(() => {
-    if (snippets.length > 0) {
+    if (isLoaded) {
       saveStorage("snippets", snippets);
     }
-  }, [snippets]);
+  }, [snippets, isLoaded, saveStorage]);
 
   useEffect(() => {
-    if (palettes.length > 0) {
+    if (isLoaded) {
       saveStorage("palettes", palettes);
     }
-  }, [palettes]);
+  }, [palettes, isLoaded, saveStorage]);
 
   function buildCategories(mode?: Modes) {
     let selMode: PastiesCategory[] | undefined = undefined;
@@ -100,7 +102,18 @@ export function usePasties() {
     } else if (mode === "emojies-picker") {
       selMode = emojiData;
     } else if (mode === "kaomoji-picker") {
-      selMode = kaomojiData;
+      const cats: Category[] = [{ slug: "all", item: "All" }];
+      kaomojiData.forEach((c) => {
+        cats.push({ slug: c.slug, item: c.item });
+      });
+      return cats;
+    } else if (mode === "favorites") {
+      return [
+        { slug: "all", item: "All" },
+        { slug: "emojies-picker", item: "😀" },
+        { slug: "color-picker", item: "🎨" },
+        { slug: "kaomoji-picker", item: "¯\\_(ツ)_/¯" },
+      ];
     }
 
     const categories: Category[] = [];

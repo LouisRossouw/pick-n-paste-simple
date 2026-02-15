@@ -143,8 +143,9 @@ export function PastiesArea() {
                     e.stopPropagation();
                     toggleFavorite(pasti);
                   }}
+                  size={"sm"}
                   className={cn(
-                    "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity",
+                    "absolute -top-1 -right-1 p-0.5 h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity",
                     favourties.some((f) => f.slug === pasti.slug) &&
                       "opacity-100 text-yellow-500",
                   )}
@@ -187,7 +188,7 @@ export function PastiesArea() {
                               toggleFavorite(p);
                             }}
                             className={cn(
-                              "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
+                              "absolute -top-1 -right-1 p-0.5 rounded-full border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
                               isFav && "opacity-100 text-yellow-500",
                             )}
                           >
@@ -218,8 +219,9 @@ export function PastiesArea() {
                     e.stopPropagation();
                     toggleFavorite(pasti);
                   }}
+                  size={"sm"}
                   className={cn(
-                    "absolute -top-1 -right-1 p-0.5 rounded-full bg-background border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
+                    "absolute -top-1 -right-1 p-0.5 opacity-0 group-hover:opacity-100 transition-opacity z-10",
                     isFav && "opacity-100 text-yellow-500",
                   )}
                 >

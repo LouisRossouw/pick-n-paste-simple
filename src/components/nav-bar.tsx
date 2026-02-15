@@ -51,7 +51,7 @@ export function NavBar({
     setOpen(false);
     handleUpdateCategories(mode.slug);
     setSelectedCategory(
-      mode.slug === "emojies-picker" ? "smileys_emotion" : "all"
+      mode.slug === "emojies-picker" ? "smileys_emotion" : "all",
     );
   }
 
@@ -66,49 +66,62 @@ export function NavBar({
       <div
         className={cn(
           "flex w-full px-4",
-          isDark ? "bg-slate-950" : "bg-slate-100"
+          isDark ? "bg-slate-950" : "bg-slate-100",
         )}
       >
         <div className="flex items-center">{logo}</div>
         <div className="flex w-full items-center justify-center px-4">
-          {location.pathname !== "/menu" && (
-            <Carousel
-              opts={{
-                align: "start",
-              }}
-              className="w-32" // ensure enough space
-            >
-              <CarouselContent>
-                {categoriesReversed.map((cat, index) => (
-                  <CarouselItem key={index} className="basis-1/3">
-                    <div className="flex items-center">
-                      <Button
-                        size="icon"
-                        className="h-6 w-full" // optional: fill available space
-                        style={{
-                          backgroundColor:
-                            mode.slug === "emojies-picker" ? "" : cat.item,
-                        }}
-                        onClick={() => {
-                          setSearch("");
-                          setSelectedCategory(cat.slug);
-                        }}
-                        variant={
-                          selectedCategory === cat.slug ? "outline" : "ghost"
-                        }
-                      >
-                        {mode.slug === "emojies-picker" && (
-                          <span className="text-lg">{cat.item}</span>
-                        )}
-                      </Button>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="bg-transparent border-none" />
-              <CarouselNext className="bg-transparent border-none" />
-            </Carousel>
-          )}
+          {location.pathname !== "/menu" &&
+            mode.slug !== "palettes" &&
+            mode.slug !== "snippets" && (
+              <Carousel
+                opts={{
+                  align: "start",
+                }}
+                className="w-32" // ensure enough space
+              >
+                <CarouselContent>
+                  {categoriesReversed.map((cat, index) => (
+                    <CarouselItem key={index} className="basis-1/3">
+                      <div className="flex items-center">
+                        <Button
+                          size="icon"
+                          className="h-6 w-full" // optional: fill available space
+                          style={{
+                            backgroundColor:
+                              mode.slug === "emojies-picker" ? "" : cat.item,
+                          }}
+                          onClick={() => {
+                            setSearch("");
+                            setSelectedCategory(cat.slug);
+                          }}
+                          variant={
+                            selectedCategory === cat.slug ? "outline" : "ghost"
+                          }
+                        >
+                          {mode.slug === "emojies-picker" && (
+                            <span className="text-lg">{cat.item}</span>
+                          )}
+                          {mode.slug === "kaomoji-picker" && (
+                            <span className="text-[10px] font-medium break-all leading-tight">
+                              {cat.item}
+                            </span>
+                          )}
+                          {(mode.slug === "favorites" ||
+                            mode.slug === "kaomoji-picker") &&
+                            cat.slug === "all" && <span>All</span>}
+                          {mode.slug === "favorites" && cat.slug !== "all" && (
+                            <span className="text-lg">{cat.item}</span>
+                          )}
+                        </Button>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="bg-transparent border-none" />
+                <CarouselNext className="bg-transparent border-none" />
+              </Carousel>
+            )}
         </div>
 
         <div className="flex items-center">
@@ -128,7 +141,9 @@ export function NavBar({
     <div
       className={cn(
         "flex w-full rounded-lg border",
-        isDark ? "border-gray-700 bg-gray-900" : "border-slate-200 bg-slate-100"
+        isDark
+          ? "border-gray-700 bg-gray-900"
+          : "border-slate-200 bg-slate-100",
       )}
     >
       <div className="flex w-full justify-start gap-4 p-4">{logo}</div>

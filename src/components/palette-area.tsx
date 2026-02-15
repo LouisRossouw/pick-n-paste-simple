@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { Plus, Trash2, Palette as PaletteIcon } from "lucide-react";
+import { motion } from "motion/react";
 import { toast } from "sonner";
 
 import { useApp } from "@/lib/context";
+import { cn } from "@/lib/utils";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 export function PaletteArea() {
-  const { palettes, setPalettes } = useApp();
+  const { palettes, setPalettes, isAddingPalette, setIsAddingPalette } =
+    useApp();
   const [newPaletteName, setNewPaletteName] = useState("");
 
   function addPalette() {
@@ -20,6 +23,7 @@ export function PaletteArea() {
     };
     setPalettes((prev) => [...prev, newPalette]);
     setNewPaletteName("");
+    setIsAddingPalette(false);
     toast(`Palette "${newPalette.name}" created!`);
   }
 
@@ -56,21 +60,33 @@ export function PaletteArea() {
   }
 
   return (
-    <div className="flex flex-col h-full overflow-hidden">
-      <div className="p-4 border-b flex gap-2">
-        <Input
-          placeholder="New palette name..."
-          value={newPaletteName}
-          onChange={(e) => setNewPaletteName(e.target.value)}
-          className="h-8 text-xs font-inter"
-          onKeyDown={(e) => e.key === "Enter" && addPalette()}
-        />
-        <Button size="sm" onClick={addPalette} className="h-8 px-2">
-          <Plus size={16} className="mr-1" /> Create
-        </Button>
+    <div className="flex flex-col h-full overflow-hidden w-full">
+      <div className={cn(isAddingPalette && "p-4")}>
+        {isAddingPalette && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="flex flex-col gap-2"
+          >
+            <div className="flex gap-2">
+              <Input
+                placeholder="New palette name..."
+                autoFocus
+                value={newPaletteName}
+                onChange={(e) => setNewPaletteName(e.target.value)}
+                className="w-full h-8 text-xs font-inter"
+                onKeyDown={(e) => e.key === "Enter" && addPalette()}
+              />
+              <Button size="sm" onClick={addPalette} className="h-8">
+                <Plus size={14} />
+              </Button>
+            </div>
+          </motion.div>
+        )}
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto py-4 space-y-4">
         {palettes.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-40 gap-2 opacity-50">
             <PaletteIcon size={32} />
@@ -82,7 +98,7 @@ export function PaletteArea() {
           palettes.map((p) => (
             <div
               key={p.id}
-              className="bg-secondary/10 rounded-lg p-3 border space-y-3"
+              className="w-full bg-secondary/10 rounded-lg p-3 border space-y-3"
             >
               <div className="flex justify-between items-center">
                 <h3 className="text-xs font-bold uppercase tracking-wider opacity-70 flex items-center gap-2">

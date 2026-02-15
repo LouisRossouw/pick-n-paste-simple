@@ -6,9 +6,11 @@ import { useApp } from "@/lib/context";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
 export function SnippetArea() {
-  const { snippets, setSnippets, search } = useApp();
+  const { snippets, setSnippets, search, isAddingSnippet, setIsAddingSnippet } =
+    useApp();
 
   const [newSnippet, setNewSnippet] = useState("");
   const [newLabel, setNewLabel] = useState("");
@@ -26,6 +28,7 @@ export function SnippetArea() {
     setSnippets((prev) => [snippet, ...prev]);
     setNewSnippet("");
     setNewLabel("");
+    setIsAddingSnippet(false);
     toast("Snippet added!");
   }
 
@@ -52,25 +55,43 @@ export function SnippetArea() {
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
-      <div className="p-4 border-b space-y-2">
-        <div className="flex gap-2">
-          <Input
-            placeholder="Label (optional)"
-            value={newLabel}
-            onChange={(e) => setNewLabel(e.target.value)}
-            className="h-8 text-xs"
-          />
-          <Button size="sm" onClick={addSnippet} className="h-8">
-            <Plus size={16} />
-          </Button>
-        </div>
-        <Input
-          placeholder="Your text here..."
-          value={newSnippet}
-          onChange={(e) => setNewSnippet(e.target.value)}
-          className="h-8 text-xs"
-          onKeyDown={(e) => e.key === "Enter" && addSnippet()}
-        />
+      <div className={cn(isAddingSnippet && "py-4")}>
+        {!isAddingSnippet ? (
+          <div className="flex justify-start sm:block hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsAddingSnippet(true)}
+              className="h-6 w-6 p-0 rounded-full"
+            >
+              <Plus size={14} />
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-2 animate-in fade-in slide-in-from-top-1 duration-300">
+            <div className="flex gap-2">
+              <Input
+                placeholder="Label (optional)"
+                autoFocus
+                value={newLabel}
+                onChange={(e) => setNewLabel(e.target.value)}
+                className="h-8 text-xs font-inter"
+              />
+              <Button size="sm" onClick={addSnippet} className="h-8 px-2">
+                <Plus size={14} />
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Input
+                placeholder="Your text here..."
+                value={newSnippet}
+                onChange={(e) => setNewSnippet(e.target.value)}
+                className="h-8 text-xs font-inter"
+                onKeyDown={(e) => e.key === "Enter" && addSnippet()}
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-2">

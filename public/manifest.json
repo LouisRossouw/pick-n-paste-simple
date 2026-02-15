@@ -1,20 +1,23 @@
 {
-"manifest_version": 3,
-"name": "Pick n Paste",
-"description": "Pick emojis & Tailwind colors!",
-"version": "1.0.1",
-"action": {
+  "manifest_version": 3,
+  "name": "Pick n Paste",
+  "description": "Pick emojis & Tailwind colors!",
+  "version": "1.2.0",
+  "action": {
     "default_popup": "src/popup/index.html"
-},
-"side_panel": {
+  },
+  "side_panel": {
     "default_path": "src/side-panel/index.html"
-    },
-    "background": {
-  "service_worker": "background.js",
-  "type": "module"
-},
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "icons": {
     "128": "pick_n_paste_logo_128.png"
   },
-"permissions": ["storage", "sidePanel"]
+  "permissions": [
+    "storage",
+    "sidePanel"
+  ]
 }

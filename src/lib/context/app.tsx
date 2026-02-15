@@ -58,6 +58,10 @@ type AppContextType = {
   colorFormat: ColorFormat;
   setColorFormat: (v: ColorFormat) => void;
   handleUpdateCategories: (v: Modes) => void;
+  isAddingSnippet: boolean;
+  setIsAddingSnippet: (v: boolean) => void;
+  isAddingPalette: boolean;
+  setIsAddingPalette: (v: boolean) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
@@ -86,6 +90,10 @@ export const AppContext = createContext<AppContextType>({
   colorFormat: "hex",
   setColorFormat: () => {},
   handleUpdateCategories: () => {},
+  isAddingSnippet: false,
+  setIsAddingSnippet: () => {},
+  isAddingPalette: false,
+  setIsAddingPalette: () => {},
 });
 
 const defaultMode = {
@@ -105,6 +113,8 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [pastCopyBoxMode, setPastCopyBoxMode] = useState<CBM>("history");
   const [colorFormat, setColorFormat] = useState<ColorFormat>("hex");
+  const [isAddingSnippet, setIsAddingSnippet] = useState(false);
+  const [isAddingPalette, setIsAddingPalette] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -185,6 +195,10 @@ export const AppContextProvider = ({ children }: PropsWithChildren) => {
         setColorFormat,
         palettes,
         setPalettes,
+        isAddingSnippet,
+        setIsAddingSnippet,
+        isAddingPalette,
+        setIsAddingPalette,
       }}
     >
       {children}

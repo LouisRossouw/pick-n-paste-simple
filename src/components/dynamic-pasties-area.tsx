@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/context";
@@ -17,6 +18,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Button } from "./ui/button";
 
 export function DynamicPastiesArea({
   isCompactMode,
@@ -32,8 +34,17 @@ export function DynamicPastiesArea({
   selected: string | null;
   setSelected: (v: string | null) => void;
 }) {
-  const { setMode, setSearch, handleUpdateCategories, setSelectedCategory } =
-    useApp();
+  const {
+    mode,
+    setMode,
+    setSearch,
+    handleUpdateCategories,
+    setSelectedCategory,
+    isAddingSnippet,
+    setIsAddingSnippet,
+    isAddingPalette,
+    setIsAddingPalette,
+  } = useApp();
 
   const [api, setApi] = useState<CarouselApi>();
   const [viewsOrder, setViewsOrder] = useState<MainViews[]>(mainItemsOrder);
@@ -48,6 +59,10 @@ export function DynamicPastiesArea({
     if (mode.slug === "emojies-picker") {
       setSelectedCategory("smileys_emotion");
     } else if (mode.slug === "color-picker") {
+      setSelectedCategory("all");
+    } else if (mode.slug === "kaomoji-picker") {
+      setSelectedCategory("all");
+    } else if (mode.slug === "favorites") {
       setSelectedCategory("all");
     }
   }
@@ -93,11 +108,11 @@ export function DynamicPastiesArea({
   // const yearBarView = selected === "year-bar-view" && isHovered;
 
   return (
-    <div className="relative h-full w-full px-1">
+    <div className="relative h-full w-full">
       <Carousel
         className={cn(
           "w-full h-full justify-center items-center flex",
-          isCompactMode ? "px-4" : "px-8",
+          isCompactMode ? "px-2" : "px-8",
         )}
         setApi={setApi}
       >
@@ -106,6 +121,32 @@ export function DynamicPastiesArea({
         </CarouselContent>
         {isHovered && (
           <>
+            {(mode.slug === "snippets" || mode.slug === "palettes") &&
+              isCompactMode && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => {
+                    if (mode.slug === "snippets") {
+                      setIsAddingSnippet(!isAddingSnippet);
+                    } else {
+                      setIsAddingPalette(!isAddingPalette);
+                    }
+                  }}
+                  className={cn(
+                    "absolute -left-1 bottom-40 h-6 w-6 z-50 p-0 transition-all duration-300",
+                    (
+                      mode.slug === "snippets"
+                        ? isAddingSnippet
+                        : isAddingPalette
+                    )
+                      ? "rotate-45 scale-110 shadow-lg"
+                      : "hover:bg-secondary hover:scale-110",
+                  )}
+                >
+                  <Plus size={16} />
+                </Button>
+              )}
             <CarouselPrevious
               className={cn(
                 "ml-10 z-20 animate-fadeViewer hover:cursor-pointer",
